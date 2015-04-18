@@ -3,9 +3,8 @@ using System.Collections;
 
 public class PlacementMenuHandler : MonoBehaviour {
 
-    public GameObject nanobot;
-
     private GameObject mouseFollowingSprite = null;
+    private GameObject nanobotPrefab = null;
 
 	// Use this for initialization
 	void Start () {
@@ -20,13 +19,14 @@ public class PlacementMenuHandler : MonoBehaviour {
         }
 	}
 
-    public void clickNanobot(int index) {
+    public void clickNanobot(GameObject nanobotPrefab) {
         if (mouseFollowingSprite != null) {
             Destroy(mouseFollowingSprite);
         }
 
+        this.nanobotPrefab = nanobotPrefab;
         mouseFollowingSprite = new GameObject();
-        mouseFollowingSprite.AddComponent<SpriteRenderer>().sprite = nanobot.GetComponent<SpriteRenderer>().sprite;
+        mouseFollowingSprite.AddComponent<SpriteRenderer>().sprite = nanobotPrefab.GetComponent<SpriteRenderer>().sprite;
         mouseFollowingSprite.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         CellHighlighter.triggerHighlights();
     }
@@ -36,12 +36,17 @@ public class PlacementMenuHandler : MonoBehaviour {
     }
 
     public GameObject getDraggedNanobot() {
-        return GameObject.Instantiate(nanobot);
+        if (mouseFollowingSprite == null) {
+            return null;
+        } else {
+            return GameObject.Instantiate(nanobotPrefab);
+        }
     }
 
     public void stopDragging() {
         Destroy(mouseFollowingSprite);
         mouseFollowingSprite = null;
+        nanobotPrefab = null;
         CellHighlighter.clearHighlights();
     }
 }

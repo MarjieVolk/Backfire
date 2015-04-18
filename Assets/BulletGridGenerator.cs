@@ -45,7 +45,7 @@ public class BulletGridGenerator : MonoBehaviour {
                 GameGrid[x][y].Cell = cell;
             }
         }
-        GameObject newBotPrefab = (GameObject)Instantiate(NormalNanoBot, new Vector2(cellWidth * 0.5f, cellHeight * 0.5f), Quaternion.identity);
+        GameObject newBotPrefab = (GameObject)Instantiate(NormalNanoBot, new Vector3(cellWidth * 0.5f, cellHeight * 0.5f, -9), Quaternion.identity);
         GridPosition position = newBotPrefab.AddComponent<GridPosition>();
         position.x = 0;
         position.y = 0;
@@ -73,7 +73,8 @@ public class BulletGridGenerator : MonoBehaviour {
         }
         GameGrid[source.x + x][source.y + y].Nanobot = movee;
         GameGrid[source.x][source.y].Nanobot = null;
-        movee.transform.position = GameGrid[source.x + x][source.y + y].Cell.transform.position;
+        Vector3 newPosition = GameGrid[source.x + x][source.y + y].Cell.transform.position;
+        movee.transform.position = new Vector3(newPosition.x, newPosition.y, movee.transform.position.z);
         source.x += x;
         source.y += y;
     }

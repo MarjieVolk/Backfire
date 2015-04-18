@@ -27,7 +27,7 @@ public class CellHighlighter : MonoBehaviour {
     }
 
     void Update() {
-        if (isHighlighted) {
+        if (isHighlighted && getCell().nanobotCanBePlacedHere()) {
             if (isHover) {
                 gameObject.GetComponent<SpriteRenderer>().color = Color.green;
             } else {
@@ -43,9 +43,7 @@ public class CellHighlighter : MonoBehaviour {
     }
 
     public void highlight() {
-        if (getCell().nanobotCanBePlacedHere()) {
-            isHighlighted = true;
-        }
+        isHighlighted = true;
     }
 
     public void clearHighlight() {
