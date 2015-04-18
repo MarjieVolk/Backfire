@@ -39,6 +39,7 @@ public class BulletGridGenerator : MonoBehaviour {
                 //pick the cell type to place based on the color of the pixel at this location
                 GameObject cellPrefab = getPrefabForColor(levelDescriptor.GetPixel(x, y));
                 GameObject cell = (GameObject)Instantiate(cellPrefab, cellCenter, Quaternion.identity);
+                cell.GetComponent<Cell>().setPosition(x, y);
                 GameGrid[x][y] = new GameCell();
                 GameGrid[x][y].Cell = cell;
             }

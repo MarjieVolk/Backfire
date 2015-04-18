@@ -9,6 +9,8 @@ public class Cell : MonoBehaviour {
     // those are part of the tile features
     public CellFeature[] CellFeatures;
 
+    private int x, y;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -46,5 +48,18 @@ public class Cell : MonoBehaviour {
             eatAmount -= consumedAmount;
             CellFeatures[featureIndex].Amount -= consumedAmount;
         }
+    }
+
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public bool nanobotCanBePlacedHere() {
+        return getGameCell().Nanobot == null;
+    }
+
+    private BulletGridGenerator.GameCell getGameCell() {
+        return GameObject.FindObjectOfType<BulletGridGenerator>().GameGrid[x][y];
     }
 }
