@@ -37,6 +37,16 @@ public class Cell : MonoBehaviour {
         Eat(1);
 	}
 
+    void OnMouseUpAsButton() {
+        PlacementMenuHandler placementHandler = GameObject.FindObjectOfType<PlacementMenuHandler>();
+        if (nanobotCanBePlacedHere() && placementHandler.isNanobotDragging()) {
+            // Add nanobot to this cell
+            getGameCell().Nanobot = placementHandler.getDraggedNanobot();
+            getGameCell().Nanobot.transform.position = transform.position;
+            placementHandler.stopDragging();
+        }
+    }
+
     public void Eat(int eatAmount)
     {
         for (int featureIndex = 0; featureIndex < CellFeatures.Length && eatAmount > 0; featureIndex++)

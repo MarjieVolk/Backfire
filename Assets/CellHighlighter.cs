@@ -15,17 +15,41 @@ public class CellHighlighter : MonoBehaviour {
         }
     }
 
+    private bool isHighlighted = false;
+    private bool isHover = false;
+
+    void OnMouseEnter() {
+        isHover = true;
+    }
+
+    void OnMouseExit() {
+        isHover = false;
+    }
+
+    void Update() {
+        if (isHighlighted) {
+            if (isHover) {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            } else {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+        } else {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+    }
+
     public Cell getCell() {
         return gameObject.GetComponent<Cell>();
     }
 
     public void highlight() {
         if (getCell().nanobotCanBePlacedHere()) {
-            gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            isHighlighted = true;
         }
     }
 
     public void clearHighlight() {
-        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        isHighlighted = false;
     }
+
 }
