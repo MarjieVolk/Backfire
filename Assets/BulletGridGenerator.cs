@@ -45,13 +45,9 @@ public class BulletGridGenerator : MonoBehaviour {
                 GameGrid[x][y].Cell = cell;
             }
         }
-<<<<<<< HEAD
+
         GameObject newBotPrefab = (GameObject)Instantiate(NormalNanoBot, new Vector3(cellWidth * 0.5f, cellHeight * 0.5f, -9), Quaternion.identity);
-        GridPosition position = newBotPrefab.AddComponent<GridPosition>();
-=======
-        GameObject newBotPrefab = (GameObject)Instantiate(NormalNanoBot, new Vector2(cellWidth * 0.5f, cellHeight * 0.5f), Quaternion.identity);
         GridPositionComponent position = newBotPrefab.AddComponent<GridPositionComponent>();
->>>>>>> b8cd69ffedeeb57725bab2dd42b9eac956c48c6d
         position.x = 0;
         position.y = 0;
         GameGrid[0][0].Nanobot = newBotPrefab;
