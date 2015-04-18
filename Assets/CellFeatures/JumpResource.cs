@@ -1,18 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
-public class CellFeature : MonoBehaviour {
-    public Sprite Sprite;
-    public int StartingAmount;
+public class JumpResource : CellFeature
+{
 
-    protected int _amount;
-    public virtual int Amount
+    public override int Amount
     {
-        get { return _amount; }
         set
         {
             _amount = value;
+            FindObjectOfType<Resources>().addJumpResource(_amount - value);
         }
     }
 

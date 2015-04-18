@@ -18,6 +18,8 @@ public class Cell : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //find the topmost resource and update the SpriteRenderer
+        //TODO Don't do this every frame, dumbass
         int i = 0;
         while (i < CellFeatures.Length && CellFeatures[i].Amount == 0)
         {
@@ -30,7 +32,7 @@ public class Cell : MonoBehaviour {
         }
         else
         {
-            // set texture to that of CellFeatures[i]
+            GetComponent<SpriteRenderer>().sprite = CellFeatures[i].Sprite;
         }
 
         Eat(1);
