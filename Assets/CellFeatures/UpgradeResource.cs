@@ -3,23 +3,23 @@ using System.Collections;
 
 public class UpgradeResource : CellFeature
 {
-
-    public override int Amount
+    // Use this for initialization
+    void Start()
     {
-        set
-        {
-            _amount = value;
-            FindObjectOfType<Resources>().addUpgradeResource(_amount - value);
-        }
+        NotifyResourceConsumed += ResourceConsumedHandler;
     }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+
+    void ResourceConsumedHandler(int resourcesConsumed, bool exploded)
+    {
+        if (!exploded)
+        {
+            FindObjectOfType<Resources>().addUpgradeResource(resourcesConsumed);
+        }
+    }
 }

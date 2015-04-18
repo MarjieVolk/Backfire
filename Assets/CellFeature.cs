@@ -6,15 +6,7 @@ public class CellFeature : MonoBehaviour {
     public Sprite Sprite;
     public int StartingAmount;
 
-    protected int _amount;
-    public virtual int Amount
-    {
-        get { return _amount; }
-        set
-        {
-            _amount = value;
-        }
-    }
+    public int Amount { get; private set; }
 
 	// Use this for initialization
 	void Start () {
@@ -25,4 +17,17 @@ public class CellFeature : MonoBehaviour {
 	void Update () {
 	
 	}
+
+    public int TryEat(int eatAmount, bool exploded)
+    {
+        if (Amount < eatAmount) eatAmount = Amount;
+        Amount -= eatAmount;
+
+        if(NotifyResourceConsumed != null) NotifyResourceConsumed(eatAmount, exploded);
+
+        return eatAmount;
+    }
+
+    public delegate void ResourceConsumptionHandler(int consumedAmount, bool exploded);
+    public event ResourceConsumptionHandler NotifyResourceConsumed;
 }
