@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NurseryResource : CellFeature {
+public class PlacementResource : CellFeature {
 
     public override int Amount
     {
