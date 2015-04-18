@@ -5,6 +5,7 @@ using System;
 public class BulletGridGenerator : MonoBehaviour {
 
     public GameObject NormalCell;
+    public GameObject NormalNanoBot;
 
     public GameCell[][] GameGrid;
 
@@ -44,6 +45,11 @@ public class BulletGridGenerator : MonoBehaviour {
                 GameGrid[x][y].Cell = cell;
             }
         }
+        GameObject newBotPrefab = (GameObject)Instantiate(NormalNanoBot, new Vector2(cellWidth * 0.5f, cellHeight * 0.5f), Quaternion.identity);
+        GridPosition position = newBotPrefab.AddComponent<GridPosition>();
+        position.x = 0;
+        position.y = 0;
+        GameGrid[0][0].Nanobot = newBotPrefab;
 	}
 
     private GameObject getPrefabForColor(Color color)
@@ -58,6 +64,17 @@ public class BulletGridGenerator : MonoBehaviour {
         throw new ArgumentException();
     }
 
+    public void moveMe(GameObject movee, int x, int y) {
+        GridPosition position = movee.GetComponent<GridPosition>();
+        if (movee != GameGrid[position.x][position.y].Nanobot) {
+            throw new Exception(String.Format("NanoBot requesting move to ({0}/{1}) does not match NanoBot at ({2}/{3}).",
+                position.x + y, position.y + y, position.x, position.y));
+        }
+        GameGrid[position.x][position.y].Nanobot = null;
+        GameGrid[position.x + x][position.y + y].Nanobot = movee;
+        movee.transform.position = GameGrid[position.x + x][position.y + y].Cell.transform.position;
+    }
+    
     // Update is called once per frame
     void Update()
     {
