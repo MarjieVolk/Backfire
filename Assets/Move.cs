@@ -1,17 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Move : MonoBehaviour {
+public class Move : MonoBehaviour, TimestepManager.TimestepListener {
 
     BulletGridGenerator currentLevel;
 
 	// Use this for initialization
 	void Start () {
         currentLevel = FindObjectOfType<BulletGridGenerator>();
+        GameObject.FindObjectOfType<TimestepManager>().addListener(this);
 	}
-	
-	// Update is called once per frame
-    void Update() {
+
+    public void notifyTimestep() {
         currentLevel.moveMe(gameObject, 0, 1);
     }
 }
