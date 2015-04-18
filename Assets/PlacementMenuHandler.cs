@@ -27,10 +27,21 @@ public class PlacementMenuHandler : MonoBehaviour {
 
         mouseFollowingSprite = new GameObject();
         mouseFollowingSprite.AddComponent<SpriteRenderer>().sprite = nanobot.GetComponent<SpriteRenderer>().sprite;
+        mouseFollowingSprite.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         CellHighlighter.triggerHighlights();
     }
 
     public bool isNanobotDragging() {
         return mouseFollowingSprite != null;
+    }
+
+    public GameObject getDraggedNanobot() {
+        return GameObject.Instantiate(nanobot);
+    }
+
+    public void stopDragging() {
+        Destroy(mouseFollowingSprite);
+        mouseFollowingSprite = null;
+        CellHighlighter.clearHighlights();
     }
 }

@@ -16,16 +16,25 @@ public class CellHighlighter : MonoBehaviour {
     }
 
     private bool isHighlighted = false;
+    private bool isHover = false;
 
     void OnMouseEnter() {
-        if (isHighlighted) {
-            gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
-        }
+        isHover = true;
     }
 
     void OnMouseExit() {
+        isHover = false;
+    }
+
+    void Update() {
         if (isHighlighted) {
-            gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            if (isHover) {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            } else {
+                gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+            }
+        } else {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         }
     }
 
@@ -35,13 +44,11 @@ public class CellHighlighter : MonoBehaviour {
 
     public void highlight() {
         if (getCell().nanobotCanBePlacedHere()) {
-            gameObject.GetComponent<SpriteRenderer>().color = Color.green;
             isHighlighted = true;
         }
     }
 
     public void clearHighlight() {
-        gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         isHighlighted = false;
     }
 

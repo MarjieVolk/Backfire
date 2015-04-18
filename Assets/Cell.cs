@@ -38,10 +38,13 @@ public class Cell : MonoBehaviour {
         Eat(1);
 	}
 
-    void OnClick() {
-        if (nanobotCanBePlacedHere() && GameObject.FindObjectOfType<PlacementMenuHandler>().isNanobotDragging()) {
+    void OnMouseUpAsButton() {
+        PlacementMenuHandler placementHandler = GameObject.FindObjectOfType<PlacementMenuHandler>();
+        if (nanobotCanBePlacedHere() && placementHandler.isNanobotDragging()) {
             // Add nanobot to this cell
-
+            getGameCell().Nanobot = placementHandler.getDraggedNanobot();
+            getGameCell().Nanobot.transform.position = transform.position;
+            placementHandler.stopDragging();
         }
     }
 
