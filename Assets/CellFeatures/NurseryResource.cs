@@ -7,9 +7,8 @@ public class NurseryResource : CellFeature {
     {
         set
         {
-            // add _amount - value to the player's resource store
             _amount = value;
-            Debug.Log("child thingy");
+            FindObjectOfType<Resources>().addPlacementResource(_amount - value);
         }
     }
 
