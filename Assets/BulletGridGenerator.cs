@@ -5,6 +5,7 @@ using System;
 public class BulletGridGenerator : MonoBehaviour {
 
     public GameObject NormalCell;
+    public GameObject NormalNanoBot;
 
     public GameCell[][] GameGrid;
 
@@ -44,6 +45,11 @@ public class BulletGridGenerator : MonoBehaviour {
                 GameGrid[x][y].Cell = cell;
             }
         }
+        GameObject newBotPrefab = (GameObject)Instantiate(NormalNanoBot, new Vector2(cellWidth * 0.5f, cellHeight * 0.5f), Quaternion.identity);
+        GridPosition position = newBotPrefab.AddComponent<GridPosition>();
+        position.x = 0;
+        position.y = 0;
+        GameGrid[0][0].Nanobot = newBotPrefab;
 	}
 
     private GameObject getPrefabForColor(Color color)
@@ -58,6 +64,20 @@ public class BulletGridGenerator : MonoBehaviour {
         throw new ArgumentException();
     }
 
+    public void moveMe(GameObject movee, int x, int y) {
+        GridPosition source = movee.GetComponent<GridPosition>();
+        Debug.Log(String.Format("Moving a nanobot from {0}/{1} to {2}/{3}.", source.x, source.y, source.x + x, source.y + y));
+        if (movee != GameGrid[source.x][source.y].Nanobot) {
+            throw new Exception(String.Format("NanoBot {4} requesting move to ({0}/{1}) does not match NanoBot {5} at ({2}/{3}).",
+                source.x + x, source.y + y, source.x, source.y, movee, GameGrid[source.x][source.y].Nanobot));
+        }
+        GameGrid[source.x + x][source.y + y].Nanobot = movee;
+        GameGrid[source.x][source.y].Nanobot = null;
+        movee.transform.position = GameGrid[source.x + x][source.y + y].Cell.transform.position;
+        source.x += x;
+        source.y += y;
+    }
+    
     // Update is called once per frame
     void Update()
     {
