@@ -1,18 +1,18 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-public class GridPosition : MonoBehaviour {
+public class GridPosition
+{
+    public int X { get; set; }
+    public int Y { get; set; }
 
-    public int x;
-    public int y;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public GridPosition(int x, int y)
+    {
+        // TODO: Complete member initialization
+        this.X = x;
+        this.Y = y;
+    }
 }
+

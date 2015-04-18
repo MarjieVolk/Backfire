@@ -40,13 +40,13 @@ public class BulletGridGenerator : MonoBehaviour {
                 //pick the cell type to place based on the color of the pixel at this location
                 GameObject cellPrefab = getPrefabForColor(levelDescriptor.GetPixel(x, y));
                 GameObject cell = (GameObject)Instantiate(cellPrefab, cellCenter, Quaternion.identity);
-                cell.GetComponent<Cell>().setPosition(x, y);
+                cell.GetComponent<Cell>().GridPosition = new GridPosition(x, y);
                 GameGrid[x][y] = new GameCell();
                 GameGrid[x][y].Cell = cell;
             }
         }
         GameObject newBotPrefab = (GameObject)Instantiate(NormalNanoBot, new Vector2(cellWidth * 0.5f, cellHeight * 0.5f), Quaternion.identity);
-        GridPosition position = newBotPrefab.AddComponent<GridPosition>();
+        GridPositionComponent position = newBotPrefab.AddComponent<GridPositionComponent>();
         position.x = 0;
         position.y = 0;
         GameGrid[0][0].Nanobot = newBotPrefab;
@@ -64,8 +64,22 @@ public class BulletGridGenerator : MonoBehaviour {
         throw new ArgumentException();
     }
 
+    public GameCell getCellAt(GridPosition position)
+    {
+        return GameGrid[position.X][position.Y];
+    }
+
+    public GridPosition applyDelta(GridPosition origin, GridPosition delta)
+    {
+        GridPosition dest = new GridPosition(origin.X + delta.X, origin.Y + delta.Y);
+        if (dest.X >= GameGrid.Length || dest.X < 0) return null;
+        dest.Y %= GameGrid[0].Length;
+
+        return dest;
+    }
+
     public void moveMe(GameObject movee, int x, int y) {
-        GridPosition source = movee.GetComponent<GridPosition>();
+        GridPositionComponent source = movee.GetComponent<GridPositionComponent>();
         Debug.Log(String.Format("Moving a nanobot from {0}/{1} to {2}/{3}.", source.x, source.y, source.x + x, source.y + y));
         if (movee != GameGrid[source.x][source.y].Nanobot) {
             throw new Exception(String.Format("NanoBot {4} requesting move to ({0}/{1}) does not match NanoBot {5} at ({2}/{3}).",
