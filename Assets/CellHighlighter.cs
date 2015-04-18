@@ -15,6 +15,20 @@ public class CellHighlighter : MonoBehaviour {
         }
     }
 
+    private bool isHighlighted = false;
+
+    void OnMouseEnter() {
+        if (isHighlighted) {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+    }
+
+    void OnMouseExit() {
+        if (isHighlighted) {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+        }
+    }
+
     public Cell getCell() {
         return gameObject.GetComponent<Cell>();
     }
@@ -22,10 +36,13 @@ public class CellHighlighter : MonoBehaviour {
     public void highlight() {
         if (getCell().nanobotCanBePlacedHere()) {
             gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+            isHighlighted = true;
         }
     }
 
     public void clearHighlight() {
         gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        isHighlighted = false;
     }
+
 }

@@ -38,6 +38,13 @@ public class Cell : MonoBehaviour {
         Eat(1);
 	}
 
+    void OnClick() {
+        if (nanobotCanBePlacedHere() && GameObject.FindObjectOfType<PlacementMenuHandler>().isNanobotDragging()) {
+            // Add nanobot to this cell
+
+        }
+    }
+
     public void Eat(int eatAmount)
     {
         for (int featureIndex = 0; featureIndex < CellFeatures.Length && eatAmount > 0; featureIndex++)

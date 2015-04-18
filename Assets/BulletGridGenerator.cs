@@ -66,7 +66,7 @@ public class BulletGridGenerator : MonoBehaviour {
 
     public void moveMe(GameObject movee, int x, int y) {
         GridPosition source = movee.GetComponent<GridPosition>();
-        Debug.Log(String.Format("Moving a nanobot from {0}/{1} to {2}/{3}.", source.x, source.y, source.x + x, source.y + y));
+        //Debug.Log(String.Format("Moving a nanobot from {0}/{1} to {2}/{3}.", source.x, source.y, source.x + x, source.y + y));
         if (movee != GameGrid[source.x][source.y].Nanobot) {
             throw new Exception(String.Format("NanoBot {4} requesting move to ({0}/{1}) does not match NanoBot {5} at ({2}/{3}).",
                 source.x + x, source.y + y, source.x, source.y, movee, GameGrid[source.x][source.y].Nanobot));
