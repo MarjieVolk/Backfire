@@ -118,10 +118,12 @@ public class BulletGridGenerator : MonoBehaviour {
                 newPosition.X, newPosition.Y, source.position.X, source.position.Y, parent, GameGrid[source.position.X][source.position.Y].Nanobot));
         }
         GameGrid[source.position.X][source.position.Y].Nanobot = null;
-        GameObject newBot = Instantiate(NormalNanoBot);
-        newBot.GetComponent<Move>().schematic = schematic;
-        GridPositionComponent gridPosition = newBot.GetComponent<GridPositionComponent>();
-        setBotPosition(newBot, gridPosition, newPosition);
+        if (newPosition != null) {
+            GameObject newBot = Instantiate(NormalNanoBot);
+            newBot.GetComponent<Move>().schematic = schematic;
+            GridPositionComponent gridPosition = newBot.GetComponent<GridPositionComponent>();
+            setBotPosition(newBot, gridPosition, newPosition);
+        }
     }
 
     // Update is called once per frame
