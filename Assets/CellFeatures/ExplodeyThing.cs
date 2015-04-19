@@ -25,6 +25,8 @@ public class ExplodeyThing : CellFeature
 
     void ResourceConsumedHandler(int resourcesConsumed, bool exploded)
     {
+        if (resourcesConsumed == 0) return;
+        Debug.Log(Amount);
         if (Amount == 0)
         {
             explode();
@@ -38,8 +40,7 @@ public class ExplodeyThing : CellFeature
 
     void explode()
     {
-        Cell cell = GetComponent<Cell>();
-        GridPosition cellPosition = cell.GridPosition;
+        GridPosition cellPosition = Cell.GridPosition;
         explodeNanobots(cellPosition);
         explodeTerrain(cellPosition);
     }

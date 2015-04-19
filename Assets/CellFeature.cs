@@ -6,6 +6,7 @@ public class CellFeature : MonoBehaviour {
     public Sprite Sprite;
     public int StartingAmount;
 
+    public Cell Cell;
     public int Amount { get; private set; }
 
     void Awake() // TODO if any subclass impl Awake() this breaks; bad!  Fix!

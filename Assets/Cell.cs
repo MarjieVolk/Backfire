@@ -15,6 +15,8 @@ public class Cell : MonoBehaviour {
         for (int i = 0; i < CellFeatures.Length; i++)
         {
             CellFeatures[i] = Instantiate<CellFeature>(CellFeatures[i]);
+            CellFeatures[i].Cell = this;
+            CellFeatures[i].transform.parent = transform;
         }
 	}
 

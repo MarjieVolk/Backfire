@@ -5,6 +5,7 @@ using System;
 public class BulletGridGenerator : MonoBehaviour {
 
     public GameObject NormalCell;
+    public GameObject BombCell;
     public GameObject NormalNanoBot;
 
     public GameCell[][] GameGrid;
@@ -55,13 +56,19 @@ public class BulletGridGenerator : MonoBehaviour {
 
     private GameObject getPrefabForColor(Color color)
     {
-        Color grey = new Color(127/255.0f, 127/255.0f, 127/255.0f);
+        Color grey = new Color(127 / 255.0f, 127 / 255.0f, 127 / 255.0f);
+        Color red = new Color(255 / 255.0f, 0 / 255.0f, 0 / 255.0f);
         if (color.Equals(grey)) // grey
         {
             return NormalCell;
         }
+        if (color.Equals(red))
+        {
+            return BombCell;
+        }
         Debug.Log(color);
         Debug.Log(grey);
+        Debug.Log(red);
         throw new ArgumentException();
     }
 
