@@ -102,7 +102,6 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
     }
 
     public IEnumerator moveBotAnimatedCoroutine(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow){
-        Debug.Log("Moving");
         GameObject bot = moveBot(source, nanobot, offset);
 
         Vector2 initialPosition = getCellAt(source).Cell.transform.position;
@@ -110,14 +109,10 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         Vector2 movement = finalPosition - initialPosition;
         for (int i = 0; i < durationInTicks; i++)
         {
-            Debug.Log(i);
             bot.transform.position = initialPosition + (((float) i + 1 )/ durationInTicks) * movement;
             yield return null;
         }
-        Debug.Log("Done moving");
         bot.transform.position = finalPosition;
-        yield return null;
-        Debug.Log("Revisited");
     }
 
     public GameObject moveBot(GridPosition source, Nanobot nanobot, GridPosition offset)
