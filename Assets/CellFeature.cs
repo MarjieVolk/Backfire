@@ -8,15 +8,10 @@ public class CellFeature : MonoBehaviour {
 
     public int Amount { get; private set; }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    void Awake() // TODO if any subclass impl Awake() this breaks; bad!  Fix!
+    {
+        Amount = StartingAmount;
+    }
 
     public int TryEat(int eatAmount, bool exploded)
     {

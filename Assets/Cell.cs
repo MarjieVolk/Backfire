@@ -34,7 +34,7 @@ public class Cell : MonoBehaviour {
             GetComponent<SpriteRenderer>().sprite = CellFeatures[i].Sprite;
         }
 
-        Eat(1, false);
+        //Eat(1, false);
 	}
 
     void OnMouseUpAsButton() {
