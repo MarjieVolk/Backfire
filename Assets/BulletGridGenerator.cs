@@ -149,14 +149,18 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         if(bot != null) bot.GetComponent<SpriteRenderer>().enabled = true;
     }
 
-    public GameObject moveBot(GridPosition source, Nanobot nanobot, GridPosition offset)
-    {
-        GridPosition newPosition = applyDelta(source, offset);
-        GameObject newBot = placeBot(newPosition, nanobot);
+    public void DestroyNanobotAt(GridPosition source) {
         if( GameGrid[source.X][source.Y].Nanobot != null) {
             GameGrid[source.X][source.Y].goingAway.Add(GameGrid[source.X][source.Y].Nanobot);
             GameGrid[source.X][source.Y].Nanobot = null;
         }
+    }
+
+    public GameObject moveBot(GridPosition source, Nanobot nanobot, GridPosition offset)
+    {
+        GridPosition newPosition = applyDelta(source, offset);
+        GameObject newBot = placeBot(newPosition, nanobot);
+        DestroyNanobotAt(source);
         return newBot;
     }
 
