@@ -43,7 +43,7 @@ public class PlacementMenuHandler : MonoBehaviour {
         if (mouseFollowingSprite == null) {
             return null;
         } else {
-            return GameObject.Instantiate(nanobotPrefab);
+            return nanobotPrefab;
         }
     }
 
