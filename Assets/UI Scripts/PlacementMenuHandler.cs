@@ -1,14 +1,18 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlacementMenuHandler : MonoBehaviour {
 
     private GameObject mouseFollowingSprite = null;
-    private GameObject nanobotPrefab = null;
+    private Nanobot nanobotPrefab = null;
+
+    private BotSlot[] botSlots;
 
 	// Use this for initialization
 	void Start () {
-	
+        botSlots = GameObject.FindObjectsOfType<BotSlot>();
 	}
 	
 	// Update is called once per frame
@@ -19,7 +23,7 @@ public class PlacementMenuHandler : MonoBehaviour {
         }
 	}
 
-    public void clickNanobot(GameObject nanobotPrefab) {
+    public void clickNanobot(Nanobot nanobotPrefab) {
         if (mouseFollowingSprite != null) {
             Destroy(mouseFollowingSprite);
         }
@@ -35,7 +39,7 @@ public class PlacementMenuHandler : MonoBehaviour {
         return mouseFollowingSprite != null;
     }
 
-    public GameObject getDraggedNanobot() {
+    public Nanobot getDraggedNanobot() {
         if (mouseFollowingSprite == null) {
             return null;
         } else {

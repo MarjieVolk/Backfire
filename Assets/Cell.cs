@@ -47,7 +47,7 @@ public class Cell : MonoBehaviour {
         PlacementMenuHandler placementHandler = GameObject.FindObjectOfType<PlacementMenuHandler>();
         if (nanobotCanBePlacedHere() && placementHandler.isNanobotDragging()) {
             // Add nanobot to this cell
-            getGameCell().Nanobot = placementHandler.getDraggedNanobot();
+            getGameCell().Nanobot = placementHandler.getDraggedNanobot().gameObject;
             getGameCell().Nanobot.transform.position = transform.position;
             GridPositionComponent gridPosition = getGameCell().Nanobot.GetComponent<GridPositionComponent>();
             gridPosition.position.X = this.GridPosition.X;
