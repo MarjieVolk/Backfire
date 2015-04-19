@@ -12,11 +12,15 @@ public class Cell : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        for (int i = 0; i < CellFeatures.Length; i++)
+        {
+            CellFeatures[i] = Instantiate<CellFeature>(CellFeatures[i]);
+        }
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         //find the topmost resource and update the SpriteRenderer
         //TODO Don't do this every frame, dumbass
         int i = 0;
@@ -34,7 +38,7 @@ public class Cell : MonoBehaviour {
             GetComponent<SpriteRenderer>().sprite = CellFeatures[i].Sprite;
         }
 
-        Eat(1, false);
+        //Eat(1, false);
 	}
 
     void OnMouseUpAsButton() {
