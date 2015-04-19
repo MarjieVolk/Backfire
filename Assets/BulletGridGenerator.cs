@@ -83,21 +83,11 @@ public class BulletGridGenerator : MonoBehaviour {
         if (position == null) {
             return;
         }
+        Debug.Log("X=" + position.X + " Y=" + position.Y);
         GameGrid[position.X][position.Y].Nanobot = bot;
         Vector3 screenPosition = GameGrid[position.X][position.Y].Cell.transform.position;
         bot.transform.position = new Vector3(screenPosition.x, screenPosition.y, bot.transform.position.z);
         botPosition.position = position;
-    }
-
-    public void moveMe(GameObject movee, int x, int y) {
-        GridPositionComponent source = movee.GetComponent<GridPositionComponent>();
-        GridPosition newPosition = applyDelta(source.position, new GridPosition(x, y));
-        if (movee != GameGrid[source.position.X][source.position.Y].Nanobot) {
-            throw new Exception(String.Format("NanoBot {4} requesting move to ({0}/{1}) does not match NanoBot {5} at ({2}/{3}).",
-                newPosition.X, newPosition.Y, source.position.X, source.position.Y, movee, GameGrid[source.position.X][source.position.Y].Nanobot));
-        }
-        GameGrid[source.position.X][source.position.Y].Nanobot = null;
-        setBotPosition(movee, source, newPosition);
     }
 
     public void moveBot(GridPosition source, Move nanobot, GridPosition offset)
