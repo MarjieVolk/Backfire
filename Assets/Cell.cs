@@ -21,6 +21,7 @@ public class Cell : MonoBehaviour {
             CellFeatures[i].Cell = this;
             CellFeatures[i].transform.parent = transform;
         }
+        FindObjectOfType<PlaceabilityOutlineHandler>().AddCell(this);
 	}
 
     // Update is called once per frame
@@ -73,7 +74,7 @@ public class Cell : MonoBehaviour {
         return getGameCell().Nanobot == null && getGameCell().isExplored;
     }
 
-    private BulletGridGenerator.GameCell getGameCell() {
+    public BulletGridGenerator.GameCell getGameCell() {
         return level.GameGrid[GridPosition.X][GridPosition.Y];
     }
 }

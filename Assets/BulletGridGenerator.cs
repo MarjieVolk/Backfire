@@ -45,6 +45,7 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
                 cell.GetComponent<Cell>().GridPosition = new GridPosition(x, y);
                 GameGrid[x][y] = new GameCell();
                 GameGrid[x][y].Cell = cell;
+                GameGrid[x][y].Grid = this;
                 GameGrid[x][y].movingHere = new List<GameObject>();
                 GameGrid[x][y].goingAway = new List<GameObject>();
             }
@@ -206,12 +207,26 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         }
     }
 
-    public class GameCell {
+    public class GameCell
+    {
+        public BulletGridGenerator Grid;
         public GameObject Cell;
         public GameObject Nanobot;
         public List<GameObject> movingHere;
         public List<GameObject> goingAway;
-        public bool isExplored = false;
+
+        public delegate void VisibilityChangeHandler(GameCell cell, bool visibility);
+        public event VisibilityChangeHandler NotifyVisibilityChanged;
+        private bool _isExplored = false;
+        public bool isExplored
+        {
+            get { return _isExplored; }
+            set
+            {
+                _isExplored = value;
+                if(NotifyVisibilityChanged != null) NotifyVisibilityChanged(this, _isExplored);
+            }
+        }
     }
 
     public class RemoveOnNextTick : TimestepManager.TimestepListener
