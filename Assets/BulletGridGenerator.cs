@@ -74,8 +74,8 @@ public class BulletGridGenerator : MonoBehaviour {
     {
         GridPosition dest = new GridPosition(origin.X + delta.X, origin.Y + delta.Y);
         if (dest.X >= GameGrid.Length || dest.X < 0) return null;
-        dest.Y %= GameGrid[0].Length;
-
+        dest.Y = ((dest.Y % GameGrid[0].Length) + GameGrid[0].Length) % GameGrid[0].Length; // NOTE C#'s modulus operate incorrectly can generate negative numbers!
+        
         return dest;
     }
 
