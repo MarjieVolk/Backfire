@@ -7,14 +7,11 @@ public class Move : MonoBehaviour, TimestepManager.TimestepListener {
     public NanobotSchematic schematic;
 
 	// Use this for initialization
-	void Start () {
+	void Start() {
         currentLevel = FindObjectOfType<BulletGridGenerator>();
         GameObject.FindObjectOfType<TimestepManager>().addListener(this);
+        schematic = GameObject.Instantiate(schematic);
 	}
-
-    void Awake() {
-        schematic = new NanobotSchematic();
-    }
 
     public void notifyTimestep() {
         for (int x = 0; x < schematic.transformation.Length; x++) {
