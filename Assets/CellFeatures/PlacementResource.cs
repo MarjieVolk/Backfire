@@ -1,25 +1,24 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlacementResource : CellFeature
-{
-    // Use this for initialization
-    void Start()
-    {
-        NotifyResourceConsumed += ResourceConsumedHandler;
-    }
+public class PlacementResource : CellFeature {
 
-    // Update is called once per frame
-    void Update()
+    public override int Amount
     {
-
-    }
-
-    void ResourceConsumedHandler(int resourcesConsumed, bool exploded)
-    {
-        if (!exploded)
+        set
         {
-            FindObjectOfType<Resources>().addPlacementResource(resourcesConsumed);
+            _amount = value;
+            FindObjectOfType<Resources>().addPlacementResource(_amount - value);
         }
     }
+
+	// Use this for initialization
+	void Start () {
+	
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+	}
 }

@@ -34,7 +34,7 @@ public class Cell : MonoBehaviour {
             GetComponent<SpriteRenderer>().sprite = CellFeatures[i].Sprite;
         }
 
-        Eat(1, false);
+        Eat(1);
 	}
 
     void OnMouseUpAsButton() {
@@ -50,12 +50,17 @@ public class Cell : MonoBehaviour {
         }
     }
 
-    public void Eat(int eatAmount, bool exploded)
+    public void Eat(int eatAmount)
     {
         for (int featureIndex = 0; featureIndex < CellFeatures.Length && eatAmount > 0; featureIndex++)
         {
-            int consumedAmount = CellFeatures[featureIndex].TryEat(eatAmount, exploded);
+            // compute how much we will be able to eat
+            int cellAmount = CellFeatures[featureIndex].Amount;
+            int consumedAmount = Math.Min(cellAmount, eatAmount);
+
+            // eat it
             eatAmount -= consumedAmount;
+            CellFeatures[featureIndex].Amount -= consumedAmount;
         }
     }
 

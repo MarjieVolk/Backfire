@@ -8,33 +8,33 @@ public class ExplodeyThing : CellFeature
 
     public Sprite DangerZoneSprite;
     public int DangerZoneThreshold;
+    public override int Amount
+    {
+        set
+        {
+            _amount = value;
 
-    public int TerrainDamage;
-    public int TerrainSplashDamage;
+            if (_amount == 0)
+            {
+                explode();
+            }
+
+            if (_amount < DangerZoneThreshold)
+            {
+                Sprite = DangerZoneSprite;
+            }
+        }
+    }
 
 	// Use this for initialization
 	void Start () {
         _grid = FindObjectOfType<BulletGridGenerator>();
-        NotifyResourceConsumed += ResourceConsumedHandler;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-
-    void ResourceConsumedHandler(int resourcesConsumed, bool exploded)
-    {
-        if (Amount == 0)
-        {
-            explode();
-        }
-
-        if (Amount < DangerZoneThreshold)
-        {
-            Sprite = DangerZoneSprite;
-        }
-    }
 
     void explode()
     {
@@ -60,13 +60,15 @@ public class ExplodeyThing : CellFeature
 
     void explodeTerrain(GridPosition position)
     {
-        _grid.getCellAt(position).Cell.GetComponent<Cell>().Eat(TerrainDamage, true);
+        //TODO how do I blow up terrain w/o giving the player resources? Answer: I can't b/c I implemented it dumbly
+        GameObject terrainToExplode = _grid.getCellAt(position).Cell;
         foreach (GridPosition offset in _adjacentOffsets)
         {
             GridPosition adjacent = _grid.applyDelta(position, offset);
             if (adjacent != null)
             {
-                _grid.getCellAt(adjacent).Cell.GetComponent<Cell>().Eat(TerrainSplashDamage, true);
+                GameObject adjacentTerrainToExplode = _grid.getCellAt(adjacent).Cell;
+                // TODO kill this guy too
             }
         }
     }

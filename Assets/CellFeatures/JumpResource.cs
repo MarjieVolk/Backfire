@@ -3,21 +3,23 @@ using System.Collections;
 
 public class JumpResource : CellFeature
 {
+
+    public override int Amount
+    {
+        set
+        {
+            _amount = value;
+            FindObjectOfType<Resources>().addJumpResource(_amount - value);
+        }
+    }
+
 	// Use this for initialization
 	void Start () {
-        NotifyResourceConsumed += ResourceConsumedHandler;
+	
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	
 	}
-
-    void ResourceConsumedHandler(int resourcesConsumed, bool exploded)
-    {
-        if (!exploded)
-        {
-            FindObjectOfType<Resources>().addJumpResource(resourcesConsumed);
-        }
-    }
 }
