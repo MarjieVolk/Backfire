@@ -95,24 +95,46 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         botPosition.position = position;
     }
 
-    public void moveBot(GridPosition source, Nanobot nanobot, GridPosition offset)
+    public void moveBotAnimated(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow)
+    {
+        StartCoroutine(moveBotAnimatedCoroutine(source, nanobot, offset, durationInTicks, grow));
+    }
+
+    public IEnumerator moveBotAnimatedCoroutine(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow){
+        GameObject bot = moveBot(source, nanobot, offset);
+
+        Vector2 initialPosition = getCellAt(source).Cell.transform.position;
+        Vector2 finalPosition = bot.transform.position;
+        Vector2 movement = finalPosition - initialPosition;
+        for (int i = 0; i < durationInTicks; i++)
+        {
+            bot.transform.position = initialPosition + (((float) i + 1 )/ durationInTicks) * movement;
+            yield return null;
+        }
+        bot.transform.position = finalPosition;
+    }
+
+    public GameObject moveBot(GridPosition source, Nanobot nanobot, GridPosition offset)
     {
         GridPosition newPosition = applyDelta(source, offset);
-        placeBot(newPosition, nanobot);
+        GameObject newBot = placeBot(newPosition, nanobot);
         if( GameGrid[source.X][source.Y].Nanobot != null) {
             GameGrid[source.X][source.Y].goingAway.Add(GameGrid[source.X][source.Y].Nanobot);
             GameGrid[source.X][source.Y].Nanobot = null;
         }
+        return newBot;
     }
 
-    public void placeBot(GridPosition position, Nanobot nanobot)
+    public GameObject placeBot(GridPosition position, Nanobot nanobot)
     {
         if (nanobot.schematic == null || position == null) {
-            return;
+            return null;
         }
         GameObject newBot = Instantiate(nanobot.gameObject);
         GridPositionComponent gridPosition = newBot.GetComponent<GridPositionComponent>();
         setBotPosition(newBot, gridPosition, position);
+
+        return newBot;
     }
 
     public void notifyTimestep() {

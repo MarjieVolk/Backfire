@@ -21,7 +21,7 @@ public class Nanobot : MonoBehaviour, TimestepManager.TimestepListener {
             if (schematic.getTransformation()[x] != null) {
                 for (int y = 0; y < schematic.getTransformation()[x].Length; y++) {
                     if (schematic.getTransformation()[x][y] != null) {
-                        currentLevel.moveBot(gameObject.GetComponent<GridPositionComponent>().position, schematic.getTransformation()[x][y], new GridPosition(x - 1, y - 1));
+                        currentLevel.moveBotAnimated(gameObject.GetComponent<GridPositionComponent>().position, schematic.getTransformation()[x][y], new GridPosition(x - 1, y - 1), 5, false);
                     }
                 }
             }
