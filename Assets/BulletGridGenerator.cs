@@ -83,7 +83,6 @@ public class BulletGridGenerator : MonoBehaviour {
         if (position == null) {
             return;
         }
-        Debug.Log("X=" + position.X + " Y=" + position.Y);
         GameGrid[position.X][position.Y].Nanobot = bot;
         Vector3 screenPosition = GameGrid[position.X][position.Y].Cell.transform.position;
         bot.transform.position = new Vector3(screenPosition.x, screenPosition.y, bot.transform.position.z);
@@ -93,7 +92,6 @@ public class BulletGridGenerator : MonoBehaviour {
     public void moveBot(GridPosition source, Nanobot nanobot, GridPosition offset)
     {
         GridPosition newPosition = applyDelta(source, offset);
-        Debug.Log("original=(" + source.X + "," + source.Y + ") delta=(" + offset.X + "," + offset.Y + ") new=(" + newPosition.X + "," + newPosition.Y + ")");
         placeBot(newPosition, nanobot);
         GameGrid[source.X][source.Y].Nanobot = null; // TODO race condition?
     }
