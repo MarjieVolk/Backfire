@@ -18,12 +18,12 @@ public class Move : MonoBehaviour, TimestepManager.TimestepListener {
             if (schematic.getTransformation()[x] != null) {
                 for (int y = 0; y < schematic.getTransformation()[x].Length; y++) {
                     if (schematic.getTransformation()[x][y] != null) {
-                        currentLevel.placeBot(gameObject, schematic.getTransformation()[x][y].schematic, x, y);
+                        currentLevel.moveBot(gameObject.GetComponent<GridPositionComponent>().position, schematic.getTransformation()[x][y].schematic, new GridPosition(x, y));
                     }
                 }
             }
         }
         GameObject.FindObjectOfType<TimestepManager>().removeListener(this);
-        Destroy(gameObject);
+        GameObject.FindObjectOfType<TimestepManager>().destroyAtEnd(gameObject);
     }
 }

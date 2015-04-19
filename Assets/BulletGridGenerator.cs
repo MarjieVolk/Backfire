@@ -45,11 +45,6 @@ public class BulletGridGenerator : MonoBehaviour {
                 GameGrid[x][y].Cell = cell;
             }
         }
-
-        //GameObject newBotPrefab = (GameObject)Instantiate(NormalNanoBot, new Vector3(cellWidth * 0.5f, cellHeight * 0.5f, -9), Quaternion.identity);
-        //GridPositionComponent position = newBotPrefab.GetComponent<GridPositionComponent>();
-        //position.position = new GridPosition(0, 0);
-        //GameGrid[0][0].Nanobot = newBotPrefab;
 	}
 
     private GameObject getPrefabForColor(Color color)
@@ -105,23 +100,23 @@ public class BulletGridGenerator : MonoBehaviour {
         setBotPosition(movee, source, newPosition);
     }
 
-    public void placeBot(GameObject parent, NanobotSchematic schematic, int x, int y) {
-        if (schematic == null) {
+    public void moveBot(GridPosition source, NanobotSchematic schematic, GridPosition offset)
+    {
+        GridPosition newPosition = applyDelta(source, offset);
+        placeBot(newPosition, schematic);
+        GameGrid[source.X][source.Y] = null; // TODO race condition?
+    }
+
+    public void placeBot(GridPosition position, NanobotSchematic schematic)
+    {
+        if (schematic == null)
+        {
             return;
         }
-        GridPositionComponent source = parent.GetComponent<GridPositionComponent>();
-        GridPosition newPosition = applyDelta(source.position, new GridPosition(x, y));
-        if (parent != GameGrid[source.position.X][source.position.Y].Nanobot) {
-            throw new Exception(String.Format("NanoBot {4} creating bot at ({0}/{1}) does not match NanoBot {5} at ({2}/{3}).",
-                newPosition.X, newPosition.Y, source.position.X, source.position.Y, parent, GameGrid[source.position.X][source.position.Y].Nanobot));
-        }
-        GameGrid[source.position.X][source.position.Y].Nanobot = null;
-        if (newPosition != null) {
-            GameObject newBot = Instantiate(NormalNanoBot);
-            newBot.GetComponent<Move>().schematic = schematic;
-            GridPositionComponent gridPosition = newBot.GetComponent<GridPositionComponent>();
-            setBotPosition(newBot, gridPosition, newPosition);
-        }
+        GameObject newBot = Instantiate(NormalNanoBot);
+        newBot.GetComponent<Move>().schematic = schematic;
+        GridPositionComponent gridPosition = newBot.GetComponent<GridPositionComponent>();
+        setBotPosition(newBot, gridPosition, position);
     }
 
     // Update is called once per frame
