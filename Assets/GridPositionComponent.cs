@@ -3,8 +3,7 @@ using System.Collections;
 
 public class GridPositionComponent : MonoBehaviour {
 
-    public int x;
-    public int y;
+    public GridPosition position;
 
 	// Use this for initialization
 	void Start () {

@@ -49,8 +49,7 @@ public class BulletGridGenerator : MonoBehaviour {
 
         GameObject newBotPrefab = (GameObject)Instantiate(NormalNanoBot, new Vector3(cellWidth * 0.5f, cellHeight * 0.5f, -9), Quaternion.identity);
         GridPositionComponent position = newBotPrefab.AddComponent<GridPositionComponent>();
-        position.x = 0;
-        position.y = 0;
+        position.position = new GridPosition(0, 0);
         GameGrid[0][0].Nanobot = newBotPrefab;
 	}
 
@@ -80,19 +79,26 @@ public class BulletGridGenerator : MonoBehaviour {
         return dest;
     }
 
+    private void setBotPosition( GameObject bot, GridPositionComponent botPosition, GridPosition position) {
+        if (position == null) {
+            return;
+        }
+        GameGrid[position.X][position.Y].Nanobot = bot;
+        Vector3 screenPosition = GameGrid[position.X][position.Y].Cell.transform.position;
+        bot.transform.position = new Vector3(screenPosition.x, screenPosition.y, bot.transform.position.z);
+        botPosition.position = position;
+    }
+
     public void moveMe(GameObject movee, int x, int y) {
         GridPositionComponent source = movee.GetComponent<GridPositionComponent>();
-        //Debug.Log(String.Format("Moving a nanobot from {0}/{1} to {2}/{3}.", source.x, source.y, source.x + x, source.y + y));
-        if (movee != GameGrid[source.x][source.y].Nanobot) {
+        GridPosition newPosition = applyDelta(source.position, new GridPosition(x, y));
+
+        if (movee != GameGrid[source.position.X][source.position.Y].Nanobot) {
             throw new Exception(String.Format("NanoBot {4} requesting move to ({0}/{1}) does not match NanoBot {5} at ({2}/{3}).",
-                source.x + x, source.y + y, source.x, source.y, movee, GameGrid[source.x][source.y].Nanobot));
+                newPosition.X, newPosition.Y, source.position.X, source.position.Y, movee, GameGrid[source.position.X][source.position.Y].Nanobot));
         }
-        GameGrid[source.x + x][source.y + y].Nanobot = movee;
-        GameGrid[source.x][source.y].Nanobot = null;
-        Vector3 newPosition = GameGrid[source.x + x][source.y + y].Cell.transform.position;
-        movee.transform.position = new Vector3(newPosition.x, newPosition.y, movee.transform.position.z);
-        source.x += x;
-        source.y += y;
+        GameGrid[source.position.X][source.position.Y].Nanobot = null;
+        setBotPosition(movee, source, newPosition);
     }
     
     // Update is called once per frame
