@@ -95,26 +95,54 @@ public class BulletGridGenerator : MonoBehaviour {
         botPosition.position = position;
     }
 
-    public void moveBot(GridPosition source, Nanobot nanobot, GridPosition offset)
+    public void moveBotAnimated(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow)
     {
-        GridPosition newPosition = applyDelta(source, offset);
-        placeBot(newPosition, nanobot);
-        GameGrid[source.X][source.Y].Nanobot = null; // TODO race condition?
+        StartCoroutine(moveBotAnimatedCoroutine(source, nanobot, offset, durationInTicks, grow));
     }
 
-    public void placeBot(GridPosition position, Nanobot nanobot)
+    public IEnumerator moveBotAnimatedCoroutine(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow){
+        Debug.Log("Moving");
+        GameObject bot = moveBot(source, nanobot, offset);
+
+        Vector2 initialPosition = getCellAt(source).Cell.transform.position;
+        Vector2 finalPosition = bot.transform.position;
+        Vector2 movement = finalPosition - initialPosition;
+        for (int i = 0; i < durationInTicks; i++)
+        {
+            Debug.Log(i);
+            bot.transform.position = initialPosition + (((float) i + 1 )/ durationInTicks) * movement;
+            yield return null;
+        }
+        Debug.Log("Done moving");
+        bot.transform.position = finalPosition;
+        yield return null;
+        Debug.Log("Revisited");
+    }
+
+    public GameObject moveBot(GridPosition source, Nanobot nanobot, GridPosition offset)
+    {
+        GridPosition newPosition = applyDelta(source, offset);
+        GameObject newBot = placeBot(newPosition, nanobot);
+        GameGrid[source.X][source.Y].Nanobot = null; // TODO race condition?
+
+        return newBot;
+    }
+
+    public GameObject placeBot(GridPosition position, Nanobot nanobot)
     {
         if (nanobot.schematic == null)
         {
-            return;
+            return null;
         }
         if (position == null)
         {
-            return;
+            return null;
         }
         GameObject newBot = Instantiate(nanobot.gameObject);
         GridPositionComponent gridPosition = newBot.GetComponent<GridPositionComponent>();
         setBotPosition(newBot, gridPosition, position);
+
+        return newBot;
     }
 
     public class GameCell {
