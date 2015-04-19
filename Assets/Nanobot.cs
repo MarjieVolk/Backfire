@@ -26,7 +26,5 @@ public class Nanobot : MonoBehaviour, TimestepManager.TimestepListener {
                 }
             }
         }
-        GameObject.FindObjectOfType<TimestepManager>().removeListener(this);
-        GameObject.FindObjectOfType<TimestepManager>().destroyAtEnd(gameObject);
     }
 }

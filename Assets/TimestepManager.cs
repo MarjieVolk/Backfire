@@ -10,7 +10,7 @@ public class TimestepManager : MonoBehaviour {
     private List<TimestepListener> listeners = new List<TimestepListener>();
     private List<TimestepListener> toAdd = new List<TimestepListener>();
     private List<TimestepListener> toRemove = new List<TimestepListener>();
-    private List<GameObject> toDestroy = new List<GameObject>();
+    private List<TimestepListener> finalizers = new List<TimestepListener>();
 	
 	// Update is called once per frame
 	void Update () {
@@ -18,6 +18,9 @@ public class TimestepManager : MonoBehaviour {
             previousTimestepSeconds = Time.time;
             foreach (TimestepListener listener in listeners) {
                 listener.notifyTimestep();
+            }
+            foreach (TimestepListener finalizer in finalizers) {
+                finalizer.notifyTimestep();
             }
         }
 	}
@@ -29,9 +32,6 @@ public class TimestepManager : MonoBehaviour {
 
         listeners.RemoveAll((item) => toRemove.Contains(item));
         toRemove.Clear();
-
-        toDestroy.ForEach((go) => Destroy(go));
-        toDestroy.Clear();
     }
 
     public void addListener(TimestepListener listener) {
@@ -42,9 +42,12 @@ public class TimestepManager : MonoBehaviour {
         toRemove.Add(listener);
     }
 
-    public void destroyAtEnd(GameObject go)
-    {
-        toDestroy.Add(go);
+    public void addFinalizer(TimestepListener finalizer) {
+        finalizers.Add(finalizer);
+    }
+
+    public void removeFinalizer(TimestepListener finalizer) {
+        finalizers.Remove(finalizer);
     }
 
     public interface TimestepListener {
