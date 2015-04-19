@@ -45,10 +45,6 @@ public class BulletGridGenerator : MonoBehaviour {
                 GameGrid[x][y].Cell = cell;
             }
         }
-
-        NanobotSchematic schematic = new NanobotSchematic();
-        schematic.transformation[0][1] = schematic;
-        placeBot(new GridPosition(0, 0), schematic);
 	}
 
     private GameObject getPrefabForColor(Color color)
