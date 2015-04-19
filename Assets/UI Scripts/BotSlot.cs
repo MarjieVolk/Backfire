@@ -17,6 +17,7 @@ public class BotSlot : MonoBehaviour {
         if (nanobot == null) {
             // Init empty disabled button
             Destroy(transform.FindChild("Image").gameObject);
+            Destroy(transform.FindChild("SchematicGrid").gameObject);
             foreach (Text text in transform.GetComponentsInChildren<Text>()) {
                 text.text = "";
             }
@@ -29,6 +30,30 @@ public class BotSlot : MonoBehaviour {
                     text.text = nanobot.id;
                 } else if (text.gameObject.name.Equals("Price")) {
                     text.text = "" + nanobot.price;
+                }
+            }
+
+            Transform schematicGrid = transform.FindChild("SchematicGrid");
+            for (int x = 0; x < 3; x++) {
+                Nanobot[] schematicColumn = null;
+                switch (x) {
+                    case 0:
+                        schematicColumn = nanobot.schematic.transformationColumn1;
+                        break;
+                    case 1:
+                        schematicColumn = nanobot.schematic.transformationColumn2;
+                        break;
+                    case 2:
+                        schematicColumn = nanobot.schematic.transformationColumn3;
+                        break;
+                    default:
+                        break;
+                }
+
+                for (int y = 0; y < 3; y++) {
+                    Text text = schematicGrid.FindChild("Text_" + x + y).gameObject.GetComponent<Text>();
+
+                    text.text = schematicColumn[y] == null ? "" : schematicColumn[y].id;
                 }
             }
         }
