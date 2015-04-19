@@ -21,7 +21,6 @@ public class Nanobot : MonoBehaviour, TimestepManager.TimestepListener {
         cell.Cell.GetComponent<Cell>().Eat(1, false);
         if (cell.Nanobot == null) {
             currentLevel.moveBotAnimated(position, this, new GridPosition(0, 0), 5, false, true);
-            // TODO: Trigger animation for nanobot death.
             return;
         }
         for (int x = 0; x < schematic.getTransformation().Length; x++) {
