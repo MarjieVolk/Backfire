@@ -7,6 +7,9 @@ public class TimestepManager : MonoBehaviour {
     public float timestepLengthSeconds = 1.5f;
 
     private float previousTimestepSeconds = 0;
+    private bool paused = false;
+    private float previousTime = 0;
+
     private List<TimestepListener> listeners = new List<TimestepListener>();
     private List<TimestepListener> toAdd = new List<TimestepListener>();
     private List<TimestepListener> toRemove = new List<TimestepListener>();
@@ -14,6 +17,11 @@ public class TimestepManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (paused) {
+            return;
+        }
+
+
         if (Time.time - previousTimestepSeconds >= timestepLengthSeconds) {
             previousTimestepSeconds = Time.time;
             foreach (TimestepListener listener in listeners) {
@@ -32,6 +40,10 @@ public class TimestepManager : MonoBehaviour {
 
         listeners.RemoveAll((item) => toRemove.Contains(item));
         toRemove.Clear();
+    }
+
+    public void setPaused(bool paused) {
+        this.paused = paused;
     }
 
     public void addListener(TimestepListener listener) {
