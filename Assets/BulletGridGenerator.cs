@@ -31,10 +31,8 @@ public class BulletGridGenerator : MonoBehaviour {
         float cellWidth = realWidth / cellsWidth;
         float cellHeight = realHeight / cellsHeight;
 
-        for (int x = 0; x < cellsWidth; x++)
-        {
-            for (int y = 0; y < cellsHeight; y++)
-            {
+        for (int x = 0; x < cellsWidth; x++) {
+            for (int y = 0; y < cellsHeight; y++) {
                 Vector2 cellCenter = botLeft + new Vector2(cellWidth * (x + 0.5f), cellHeight * (y + 0.5f));
 
                 //pick the cell type to place based on the color of the pixel at this location
@@ -48,8 +46,10 @@ public class BulletGridGenerator : MonoBehaviour {
         }
 
         GameObject newBotPrefab = (GameObject)Instantiate(NormalNanoBot, new Vector3(cellWidth * 0.5f, cellHeight * 0.5f, -9), Quaternion.identity);
-        GridPositionComponent position = newBotPrefab.AddComponent<GridPositionComponent>();
+        GridPositionComponent position = newBotPrefab.GetComponent<GridPositionComponent>();
         position.position = new GridPosition(0, 0);
+        NanobotSchematic schematic = newBotPrefab.GetComponent<Move>().schematic;
+        schematic.transformation[0][1] = schematic;
         GameGrid[0][0].Nanobot = newBotPrefab;
 	}
 
@@ -92,7 +92,6 @@ public class BulletGridGenerator : MonoBehaviour {
     public void moveMe(GameObject movee, int x, int y) {
         GridPositionComponent source = movee.GetComponent<GridPositionComponent>();
         GridPosition newPosition = applyDelta(source.position, new GridPosition(x, y));
-
         if (movee != GameGrid[source.position.X][source.position.Y].Nanobot) {
             throw new Exception(String.Format("NanoBot {4} requesting move to ({0}/{1}) does not match NanoBot {5} at ({2}/{3}).",
                 newPosition.X, newPosition.Y, source.position.X, source.position.Y, movee, GameGrid[source.position.X][source.position.Y].Nanobot));
@@ -100,7 +99,24 @@ public class BulletGridGenerator : MonoBehaviour {
         GameGrid[source.position.X][source.position.Y].Nanobot = null;
         setBotPosition(movee, source, newPosition);
     }
-    
+
+    public void placeBot(GameObject parent, NanobotSchematic schematic, int x, int y) {
+        if (schematic == null) {
+            return;
+        }
+        GridPositionComponent source = parent.GetComponent<GridPositionComponent>();
+        GridPosition newPosition = applyDelta(source.position, new GridPosition(x, y));
+        if (parent != GameGrid[source.position.X][source.position.Y].Nanobot) {
+            throw new Exception(String.Format("NanoBot {4} creating bot at ({0}/{1}) does not match NanoBot {5} at ({2}/{3}).",
+                newPosition.X, newPosition.Y, source.position.X, source.position.Y, parent, GameGrid[source.position.X][source.position.Y].Nanobot));
+        }
+        GameGrid[source.position.X][source.position.Y].Nanobot = null;
+        GameObject newBot = Instantiate(NormalNanoBot);
+        newBot.GetComponent<Move>().schematic = schematic;
+        GridPositionComponent gridPosition = newBot.GetComponent<GridPositionComponent>();
+        setBotPosition(newBot, gridPosition, newPosition);
+    }
+
     // Update is called once per frame
     void Update()
     {
