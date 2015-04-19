@@ -90,14 +90,14 @@ public class BulletGridGenerator : MonoBehaviour {
         botPosition.position = position;
     }
 
-    public void moveBot(GridPosition source, Move nanobot, GridPosition offset)
+    public void moveBot(GridPosition source, Nanobot nanobot, GridPosition offset)
     {
         GridPosition newPosition = applyDelta(source, offset);
         placeBot(newPosition, nanobot);
         GameGrid[source.X][source.Y].Nanobot = null; // TODO race condition?
     }
 
-    public void placeBot(GridPosition position, Move nanobot)
+    public void placeBot(GridPosition position, Nanobot nanobot)
     {
         if (nanobot.schematic == null)
         {
