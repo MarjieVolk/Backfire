@@ -3,20 +3,20 @@ using System.Collections;
 
 public class NanobotSchematic : MonoBehaviour {
 
-    public NanobotSchematic[] transformationRow1;
-    public NanobotSchematic[] transformationRow2;
-    public NanobotSchematic[] transformationRow3;
+    public Move[] transformationRow1;
+    public Move[] transformationRow2;
+    public Move[] transformationRow3;
 
-    private NanobotSchematic[][] transformation;
+    private Move[][] transformation;
 
 	void Awake() {
-        transformation = new NanobotSchematic[3][];
+        transformation = new Move[3][];
         transformation[0] = transformationRow1;
         transformation[1] = transformationRow2;
         transformation[2] = transformationRow3;
     }
 
-    public NanobotSchematic[][] getTransformation() {
+    public Move[][] getTransformation() {
         return transformation;
     }
 }
