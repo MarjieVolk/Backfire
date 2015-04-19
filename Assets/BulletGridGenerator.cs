@@ -108,6 +108,10 @@ public class BulletGridGenerator : MonoBehaviour {
         {
             return;
         }
+        if (position == null)
+        {
+            return;
+        }
         GameObject newBot = Instantiate(nanobot.gameObject);
         GridPositionComponent gridPosition = newBot.GetComponent<GridPositionComponent>();
         setBotPosition(newBot, gridPosition, position);
