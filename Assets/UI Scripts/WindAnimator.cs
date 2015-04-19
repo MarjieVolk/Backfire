@@ -6,6 +6,7 @@ using System;
 public class WindAnimator : MonoBehaviour {
 
     public float chanceToGenerate;
+    public float maxSpeed = .1f;
     public Sprite[] sprites;
 
     private System.Random gen;
@@ -26,7 +27,7 @@ public class WindAnimator : MonoBehaviour {
 
             Wind wind = new Wind();
             wind.obj = obj;
-            wind.speed = (float) gen.NextDouble() / 30f;
+            wind.speed = (float) gen.NextDouble() * maxSpeed;
             winds.Add(wind);
         }
 
