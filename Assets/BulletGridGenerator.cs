@@ -94,7 +94,7 @@ public class BulletGridGenerator : MonoBehaviour {
     {
         GridPosition newPosition = applyDelta(source, offset);
         placeBot(newPosition, nanobot);
-        GameGrid[source.X][source.Y] = null; // TODO race condition?
+        GameGrid[source.X][source.Y].Nanobot = null; // TODO race condition?
     }
 
     public void placeBot(GridPosition position, Move nanobot)
