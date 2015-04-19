@@ -18,7 +18,7 @@ public class Move : MonoBehaviour, TimestepManager.TimestepListener {
             if (schematic.getTransformation()[x] != null) {
                 for (int y = 0; y < schematic.getTransformation()[x].Length; y++) {
                     if (schematic.getTransformation()[x][y] != null) {
-                        currentLevel.moveBot(gameObject.GetComponent<GridPositionComponent>().position, schematic.getTransformation()[x][y].schematic, new GridPosition(x, y));
+                        currentLevel.moveBot(gameObject.GetComponent<GridPositionComponent>().position, schematic.getTransformation()[x][y], new GridPosition(x - 1, y - 1));
                     }
                 }
             }

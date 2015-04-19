@@ -100,21 +100,20 @@ public class BulletGridGenerator : MonoBehaviour {
         setBotPosition(movee, source, newPosition);
     }
 
-    public void moveBot(GridPosition source, NanobotSchematic schematic, GridPosition offset)
+    public void moveBot(GridPosition source, Move nanobot, GridPosition offset)
     {
         GridPosition newPosition = applyDelta(source, offset);
-        placeBot(newPosition, schematic);
+        placeBot(newPosition, nanobot);
         GameGrid[source.X][source.Y] = null; // TODO race condition?
     }
 
-    public void placeBot(GridPosition position, NanobotSchematic schematic)
+    public void placeBot(GridPosition position, Move nanobot)
     {
-        if (schematic == null)
+        if (nanobot.schematic == null)
         {
             return;
         }
-        GameObject newBot = Instantiate(NormalNanoBot);
-        newBot.GetComponent<Move>().schematic = schematic;
+        GameObject newBot = Instantiate(nanobot.gameObject);
         GridPositionComponent gridPosition = newBot.GetComponent<GridPositionComponent>();
         setBotPosition(newBot, gridPosition, position);
     }
