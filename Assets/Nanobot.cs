@@ -5,6 +5,8 @@ public class Nanobot : MonoBehaviour, TimestepManager.TimestepListener {
 
     BulletGridGenerator currentLevel;
     public NanobotSchematic schematic;
+    public int price;
+    public string id;
 
 	// Use this for initialization
 	void Start() {
@@ -24,7 +26,5 @@ public class Nanobot : MonoBehaviour, TimestepManager.TimestepListener {
                 }
             }
         }
-        GameObject.FindObjectOfType<TimestepManager>().removeListener(this);
-        GameObject.FindObjectOfType<TimestepManager>().destroyAtEnd(gameObject);
     }
 }

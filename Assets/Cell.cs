@@ -45,9 +45,10 @@ public class Cell : MonoBehaviour {
 
     void OnMouseUpAsButton() {
         PlacementMenuHandler placementHandler = GameObject.FindObjectOfType<PlacementMenuHandler>();
-        if (nanobotCanBePlacedHere() && placementHandler.isNanobotDragging()) {
+        if (nanobotCanBePlacedHere() && placementHandler.isNanobotDragging() && GameObject.FindObjectOfType<Resources>().trySpendPlacementResource(placementHandler.getDraggedNanobot().price)) {
             // Add nanobot to this cell
-            getGameCell().Nanobot = placementHandler.getDraggedNanobot();
+
+            getGameCell().Nanobot = GameObject.Instantiate(placementHandler.getDraggedNanobot()).gameObject;
             getGameCell().Nanobot.transform.position = transform.position;
             GridPositionComponent gridPosition = getGameCell().Nanobot.GetComponent<GridPositionComponent>();
             gridPosition.position.X = this.GridPosition.X;
