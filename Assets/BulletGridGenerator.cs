@@ -103,18 +103,23 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         botPosition.position = position;
     }
 
-    public void moveBotAnimated(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow)
+    public void moveBotAnimated(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow, bool die)
     {
-        StartCoroutine(moveBotAnimatedCoroutine(source, nanobot, offset, durationInTicks, grow));
+        StartCoroutine(moveBotAnimatedCoroutine(source, nanobot, offset, durationInTicks, grow, die));
     }
 
-    public IEnumerator moveBotAnimatedCoroutine(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow)
+    public IEnumerator moveBotAnimatedCoroutine(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow, bool die)
     {
-        GameObject bot = moveBot(source, nanobot, offset);
         bool destroyBot = false;
-        if (bot == null)
-        {
+        GameObject bot;
+        if (die) {
+            bot = nanobot.gameObject;
             destroyBot = true;
+        } else {
+            bot = moveBot(source, nanobot, offset);
+            if (bot == null) {
+                destroyBot = true;
+            }
         }
 
         // make a fake bot to animate, to handle things getting destroyed

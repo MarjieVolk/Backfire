@@ -20,6 +20,7 @@ public class Nanobot : MonoBehaviour, TimestepManager.TimestepListener {
         BulletGridGenerator.GameCell cell = currentLevel.getCellAt(position);
         cell.Cell.GetComponent<Cell>().Eat(1, false);
         if (cell.Nanobot == null) {
+            currentLevel.moveBotAnimated(position, this, new GridPosition(0, 0), 5, false, true);
             // TODO: Trigger animation for nanobot death.
             return;
         }
@@ -27,7 +28,7 @@ public class Nanobot : MonoBehaviour, TimestepManager.TimestepListener {
             if (schematic.getTransformation()[x] != null) {
                 for (int y = 0; y < schematic.getTransformation()[x].Length; y++) {
                     if (schematic.getTransformation()[x][y] != null) {
-                        currentLevel.moveBotAnimated(position, schematic.getTransformation()[x][y], new GridPosition(x - 1, y - 1), 5, false);
+                        currentLevel.moveBotAnimated(position, schematic.getTransformation()[x][y], new GridPosition(x - 1, y - 1), 5, false, false);
                     }
                 }
             }
