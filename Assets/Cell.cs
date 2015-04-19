@@ -66,7 +66,7 @@ public class Cell : MonoBehaviour {
     }
 
     public bool nanobotCanBePlacedHere() {
-        return getGameCell().Nanobot == null;
+        return getGameCell().Nanobot == null && getGameCell().isExplored;
     }
 
     private BulletGridGenerator.GameCell getGameCell() {

@@ -7,6 +7,7 @@ public class BulletGridGenerator : MonoBehaviour {
     public GameObject NormalCell;
     public GameObject BombCell;
     public GameObject NormalNanoBot;
+    public int startTileX, startTileY;
 
     public GameCell[][] GameGrid;
 
@@ -45,6 +46,8 @@ public class BulletGridGenerator : MonoBehaviour {
                 GameGrid[x][y].Cell = cell;
             }
         }
+
+        GameGrid[startTileX][startTileY].isExplored = true;
 	}
 
     private GameObject getPrefabForColor(Color color)
@@ -84,6 +87,9 @@ public class BulletGridGenerator : MonoBehaviour {
             return;
         }
         GameGrid[position.X][position.Y].Nanobot = bot;
+        if (bot != null) {
+            GameGrid[position.X][position.Y].isExplored = true;
+        }
         Vector3 screenPosition = GameGrid[position.X][position.Y].Cell.transform.position;
         bot.transform.position = new Vector3(screenPosition.x, screenPosition.y, bot.transform.position.z);
         botPosition.position = position;
@@ -107,14 +113,9 @@ public class BulletGridGenerator : MonoBehaviour {
         setBotPosition(newBot, gridPosition, position);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-	
-	}
-
     public class GameCell {
         public GameObject Cell;
         public GameObject Nanobot;
+        public bool isExplored = false;
     }
 }
