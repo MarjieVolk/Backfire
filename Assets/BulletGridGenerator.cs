@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System;
 
-public class BulletGridGenerator : MonoBehaviour {
+public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListener {
 
     public GameObject NormalCell;
     public GameObject BombCell;
@@ -13,6 +14,7 @@ public class BulletGridGenerator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        GameObject.FindObjectOfType<TimestepManager>().addFinalizer(this);
         // Set up bullet grid based on levelDescriptor's size
         Texture2D levelDescriptor = GetComponent<SpriteRenderer>().sprite.texture;
         int cellsWidth = levelDescriptor.width;
@@ -44,6 +46,8 @@ public class BulletGridGenerator : MonoBehaviour {
                 cell.GetComponent<Cell>().GridPosition = new GridPosition(x, y);
                 GameGrid[x][y] = new GameCell();
                 GameGrid[x][y].Cell = cell;
+                GameGrid[x][y].movingHere = new List<GameObject>();
+                GameGrid[x][y].goingAway = new List<GameObject>();
             }
         }
 
@@ -86,10 +90,7 @@ public class BulletGridGenerator : MonoBehaviour {
         if (position == null) {
             return;
         }
-        GameGrid[position.X][position.Y].Nanobot = bot;
-        if (bot != null) {
-            GameGrid[position.X][position.Y].isExplored = true;
-        }
+        GameGrid[position.X][position.Y].movingHere.Add(bot);
         Vector3 screenPosition = GameGrid[position.X][position.Y].Cell.transform.position;
         bot.transform.position = new Vector3(screenPosition.x, screenPosition.y, bot.transform.position.z);
         botPosition.position = position;
@@ -99,17 +100,15 @@ public class BulletGridGenerator : MonoBehaviour {
     {
         GridPosition newPosition = applyDelta(source, offset);
         placeBot(newPosition, nanobot);
-        GameGrid[source.X][source.Y].Nanobot = null; // TODO race condition?
+        if( GameGrid[source.X][source.Y].Nanobot != null) {
+            GameGrid[source.X][source.Y].goingAway.Add(GameGrid[source.X][source.Y].Nanobot);
+            GameGrid[source.X][source.Y].Nanobot = null;
+        }
     }
 
     public void placeBot(GridPosition position, Nanobot nanobot)
     {
-        if (nanobot.schematic == null)
-        {
-            return;
-        }
-        if (position == null)
-        {
+        if (nanobot.schematic == null || position == null) {
             return;
         }
         GameObject newBot = Instantiate(nanobot.gameObject);
@@ -117,9 +116,36 @@ public class BulletGridGenerator : MonoBehaviour {
         setBotPosition(newBot, gridPosition, position);
     }
 
+    public void notifyTimestep() {
+        foreach (GameCell[] row in GameGrid) {
+            foreach (GameCell cell in row) {
+                while( cell.goingAway.Count != 0 ) {
+                    FindObjectOfType<TimestepManager>().removeListener(cell.goingAway[0].GetComponent<Nanobot>());
+                    Destroy(cell.goingAway[0]);
+                    cell.goingAway.RemoveAt(0);
+                }
+                if (cell.movingHere.Count == 0) {
+                    continue;
+                } else if (cell.movingHere.Count == 1) {
+                    cell.Nanobot = cell.movingHere[0];
+                    cell.isExplored = true;
+                    cell.movingHere.RemoveAt(0);
+                } else {
+                    while( cell.movingHere.Count != 0) {
+                        FindObjectOfType<TimestepManager>().removeListener(cell.movingHere[0].GetComponent<Nanobot>());
+                        Destroy(cell.movingHere[0]);
+                        cell.movingHere.RemoveAt(0);
+                    }
+                }
+            }
+        }
+    }
+
     public class GameCell {
         public GameObject Cell;
         public GameObject Nanobot;
+        public List<GameObject> movingHere;
+        public List<GameObject> goingAway;
         public bool isExplored = false;
     }
 }
