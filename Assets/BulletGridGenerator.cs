@@ -7,7 +7,6 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
 
     public GameObject NormalCell;
     public GameObject BombCell;
-    public GameObject NormalNanoBot;
     public int startTileX, startTileY;
 
     public GameCell[][] GameGrid;
