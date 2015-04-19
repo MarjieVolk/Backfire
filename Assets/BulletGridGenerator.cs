@@ -76,6 +76,14 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         return GameGrid[position.X][position.Y];
     }
 
+    public Vector2 gridPositionToWorldPosition(GridPosition position)
+    {
+        Vector2 xOffset = GameGrid[1][0].Cell.transform.position - GameGrid[0][0].Cell.transform.position;
+        Vector2 yOffset = GameGrid[0][1].Cell.transform.position - GameGrid[0][0].Cell.transform.position;
+
+        return (Vector2)GameGrid[0][0].Cell.transform.position + xOffset * position.X + yOffset * position.Y;
+    }
+
     public GridPosition applyDelta(GridPosition origin, GridPosition delta)
     {
         GridPosition dest = new GridPosition(origin.X + delta.X, origin.Y + delta.Y);
@@ -100,18 +108,45 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         StartCoroutine(moveBotAnimatedCoroutine(source, nanobot, offset, durationInTicks, grow));
     }
 
-    public IEnumerator moveBotAnimatedCoroutine(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow){
+    public IEnumerator moveBotAnimatedCoroutine(GridPosition source, Nanobot nanobot, GridPosition offset, int durationInTicks, bool grow)
+    {
         GameObject bot = moveBot(source, nanobot, offset);
+        bool destroyBot = false;
+        if (bot == null)
+        {
+            destroyBot = true;
+        }
 
-        Vector2 initialPosition = getCellAt(source).Cell.transform.position;
-        Vector2 finalPosition = bot.transform.position;
+        // make a fake bot to animate, to handle things getting destroyed
+        GameObject fakeBot = new GameObject();
+        fakeBot.AddComponent<SpriteRenderer>().sprite = nanobot.GetComponent<SpriteRenderer>().sprite;
+        fakeBot.transform.localScale = nanobot.transform.localScale;
+        if(bot != null) bot.GetComponent<SpriteRenderer>().enabled = false;
+
+        Vector2 initialPosition = gridPositionToWorldPosition(source);
+        Vector2 finalPosition = gridPositionToWorldPosition(source + offset);
         Vector2 movement = finalPosition - initialPosition;
         for (int i = 0; i < durationInTicks; i++)
         {
-            bot.transform.position = initialPosition + (((float) i + 1 )/ durationInTicks) * movement;
+            fakeBot.transform.position = initialPosition + (((float)i + 1) / durationInTicks) * movement;
             yield return null;
         }
-        bot.transform.position = finalPosition;
+        fakeBot.transform.position = finalPosition;
+
+        // make the bot shrink to nothing all the time (if it's going to get destroyed) as a first approx
+        if (destroyBot || bot == null)
+        {
+            yield return null;
+            Vector3 initialScale = fakeBot.transform.localScale;
+            for (int i = 0; i < durationInTicks * 2; i++)
+            {
+                fakeBot.transform.localScale = initialScale * ((float)(durationInTicks * 2 - i) / (durationInTicks * 2));
+                yield return null;
+            }
+        }
+
+        Destroy(fakeBot);
+        if(bot != null) bot.GetComponent<SpriteRenderer>().enabled = true;
     }
 
     public GameObject moveBot(GridPosition source, Nanobot nanobot, GridPosition offset)
@@ -168,5 +203,20 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         public List<GameObject> movingHere;
         public List<GameObject> goingAway;
         public bool isExplored = false;
+    }
+
+    public class RemoveOnNextTick : TimestepManager.TimestepListener
+    {
+        GameObject _toDestroy;
+
+        public RemoveOnNextTick(GameObject toDestroy)
+        {
+            _toDestroy = toDestroy;
+        }
+
+        public void notifyTimestep()
+        {
+            Destroy(_toDestroy);
+        }
     }
 }

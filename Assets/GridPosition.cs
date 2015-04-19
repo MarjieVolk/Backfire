@@ -14,5 +14,9 @@ public class GridPosition
         this.X = x;
         this.Y = y;
     }
+    public static GridPosition operator +(GridPosition c1, GridPosition c2)
+    {
+        return new GridPosition(c1.X + c2.X, c1.Y + c2.Y);
+    }
 }
 
