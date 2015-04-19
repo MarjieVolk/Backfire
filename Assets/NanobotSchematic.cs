@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NanobotSchematic {
+public class NanobotSchematic : MonoBehaviour {
 
+    public NanobotSchematic[] transformationRow1;
+    public NanobotSchematic[] transformationRow2;
+    public NanobotSchematic[] transformationRow3;
     public NanobotSchematic[][] transformation;
 
-	// Use this for initialization
-	public NanobotSchematic () {
+	void Start() {
         transformation = new NanobotSchematic[3][];
-        for(int x = 0; x < 3; x++) {
-            transformation[x] = new NanobotSchematic[3];
-        }
-    }
-
-    public void notifyTimestep() {
+        transformation[0] = transformationRow1;
+        transformation[1] = transformationRow2;
+        transformation[2] = transformationRow3;
     }
 }

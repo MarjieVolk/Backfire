@@ -12,15 +12,15 @@ public class Move : MonoBehaviour, TimestepManager.TimestepListener {
         GameObject.FindObjectOfType<TimestepManager>().addListener(this);
 	}
 
-    void Awake() {
-        schematic = new NanobotSchematic();
-    }
-
     public void notifyTimestep() {
         Debug.Log(string.Format("Bot at {0}/{1} spawning.", GetComponent<GridPositionComponent>().position.X, GetComponent<GridPositionComponent>().position.Y));
         for (int x = 0; x < schematic.transformation.Length; x++) {
-            for (int y = 0; y < schematic.transformation[x].Length; y++) {
-                currentLevel.placeBot(gameObject, schematic.transformation[x][y], x, y);
+            if (schematic.transformation[x] != null) {
+                for (int y = 0; y < schematic.transformation[x].Length; y++) {
+                    currentLevel.placeBot(gameObject, schematic.transformation[x][y], x, y);
+                }
+            } else {
+                Debug.Log("Schematic row " + x + " was null");
             }
         }
         GameObject.FindObjectOfType<TimestepManager>().removeListener(this);
