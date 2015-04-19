@@ -14,6 +14,7 @@ public class Move : MonoBehaviour, TimestepManager.TimestepListener {
 	}
 
     public void notifyTimestep() {
+        currentLevel.getCellAt(gameObject.GetComponent<GridPositionComponent>().position).Cell.GetComponent<Cell>().Eat(1, false);
         for (int x = 0; x < schematic.getTransformation().Length; x++) {
             if (schematic.getTransformation()[x] != null) {
                 for (int y = 0; y < schematic.getTransformation()[x].Length; y++) {
