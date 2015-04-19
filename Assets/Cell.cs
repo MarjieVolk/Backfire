@@ -10,8 +10,11 @@ public class Cell : MonoBehaviour {
     public CellFeature[] CellFeatures;
     public GridPosition GridPosition;
 
+    private BulletGridGenerator level;
+
 	// Use this for initialization
 	void Start () {
+        level = GameObject.FindObjectOfType<BulletGridGenerator>();
         for (int i = 0; i < CellFeatures.Length; i++)
         {
             CellFeatures[i] = Instantiate<CellFeature>(CellFeatures[i]);
@@ -71,6 +74,6 @@ public class Cell : MonoBehaviour {
     }
 
     private BulletGridGenerator.GameCell getGameCell() {
-        return GameObject.FindObjectOfType<BulletGridGenerator>().GameGrid[GridPosition.X][GridPosition.Y];
+        return level.GameGrid[GridPosition.X][GridPosition.Y];
     }
 }
