@@ -67,7 +67,7 @@ public class BotSlot : MonoBehaviour {
 
         if (nanobot != null) {
             GetComponent<Button>().interactable = nanobot.price <= placementResource;
-            if (Input.GetKeyDown(_id.ToLower()))
+            if (GetComponent<Button>().interactable && Input.GetKeyDown(_id.ToLower()))
             {
                 handler.clickNanobot(nanobot);
             }
