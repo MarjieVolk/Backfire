@@ -30,6 +30,8 @@ public class PlacementMenuHandler : MonoBehaviour {
         mouseFollowingSprite.AddComponent<SpriteRenderer>().sprite = nanobotPrefab.GetComponent<SpriteRenderer>().sprite;
         mouseFollowingSprite.GetComponent<SpriteRenderer>().sortingOrder = 3;
         mouseFollowingSprite.transform.localScale = new Vector3(0.5f, 0.5f, 1);
+        Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseFollowingSprite.transform.position = new Vector3(position.x, position.y, mouseFollowingSprite.transform.position.z);
         CellHighlighter.triggerHighlights();
     }
 
