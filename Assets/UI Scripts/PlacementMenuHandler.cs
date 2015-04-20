@@ -23,6 +23,7 @@ public class PlacementMenuHandler : MonoBehaviour {
         this.nanobotPrefab = nanobotPrefab;
         mouseFollowingSprite = new GameObject();
         mouseFollowingSprite.AddComponent<SpriteRenderer>().sprite = nanobotPrefab.GetComponent<SpriteRenderer>().sprite;
+        mouseFollowingSprite.GetComponent<SpriteRenderer>().sortingOrder = 3;
         mouseFollowingSprite.transform.localScale = new Vector3(0.5f, 0.5f, 1);
         CellHighlighter.triggerHighlights();
     }
