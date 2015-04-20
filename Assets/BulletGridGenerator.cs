@@ -9,6 +9,12 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
 
     public GameObject NormalCell;
     public GameObject BombCell;
+    public GameObject ResourceRichCell;
+    public GameObject PlaceOnlyCell;
+    public GameObject PitOnlyCell;
+    public GameObject JumpOnlyCell;
+    public GameObject HiddenBombCell;
+
     public int startTileX, startTileY;
     public AudioClip fallSound, placeBotSound;
 
@@ -61,20 +67,23 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
 
     private GameObject getPrefabForColor(Color color)
     {
-        Color grey = new Color(127 / 255.0f, 127 / 255.0f, 127 / 255.0f);
-        Color red = new Color(255 / 255.0f, 0 / 255.0f, 0 / 255.0f);
-        if (color.Equals(grey)) // grey
-        {
-            return NormalCell;
-        }
-        if (color.Equals(red))
-        {
-            return BombCell;
-        }
-        Debug.Log(color);
-        Debug.Log(grey);
-        Debug.Log(red);
-        throw new ArgumentException();
+        Color grey = new Color(127 / 255.0f, 127 / 255.0f, 127 / 255.0f); // 'normal'
+        Color green = new Color(0 / 255.0f, 255 / 255.0f, 0 / 255.0f);    // resource rich
+        Color red = new Color(255 / 255.0f, 0 / 255.0f, 0 / 255.0f);      // visible bomb
+        Color yellow = new Color(255 / 255.0f, 255 / 255.0f, 0 / 255.0f); // place only
+        Color black = new Color(0 / 255.0f, 0 / 255.0f, 0 / 255.0f);      // pit only
+        Color purple = new Color(255 / 255.0f, 0 / 255.0f, 255 / 255.0f); // jump only
+        Color blue = new Color(0 / 255.0f, 255 / 255.0f, 0 / 255.0f);     // hidden bomb
+
+        if (color.Equals(grey)) return NormalCell;
+        if (color.Equals(red)) return BombCell;
+        if (color.Equals(green)) return ResourceRichCell;
+        if (color.Equals(yellow)) return PlaceOnlyCell;
+        if (color.Equals(black)) return PitOnlyCell;
+        if (color.Equals(purple)) return JumpOnlyCell;
+        if (color.Equals(blue)) return HiddenBombCell;
+
+        throw new ArgumentException("Unrecognized color " + color);
     }
 
     public GameCell getCellAt(GridPosition position)
