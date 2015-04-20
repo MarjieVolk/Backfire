@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -19,7 +18,7 @@ public class TutorialTextManager : MonoBehaviour {
         onClick(); // hide panel
         messages = new List<TutorialMessage>();
 
-        if (EditorApplication.currentScene.Contains("OneBulletPrototype")) {
+        if (Application.loadedLevelName.Contains("OneBulletPrototype")) {
             // Level 1 messages
             TutorialMessage message = new TutorialMessage();
             message.trigger = () => {
@@ -30,7 +29,7 @@ public class TutorialTextManager : MonoBehaviour {
 
             message = new TutorialMessage();
             message.trigger = () => {
-                return resources.getJumpResourceAmount() >= 50;
+                return resources.getJumpResourceAmount() >= LevelWinDetector.jumpResourceForJump;
             };
             message.message = "Joyous accomplishment. We have assimilated (jump resource) in sufficiency to facilitate propulsion system fabrication. Begin interplanetary transit procedure.";
             messages.Add(message);
@@ -50,7 +49,7 @@ public class TutorialTextManager : MonoBehaviour {
             messages.Add(message);
         }
 
-        if (EditorApplication.currentScene.Contains("Level 2")) {
+        if (Application.loadedLevelName.Contains("Level 2")) {
             // Level 2 messages
             TutorialMessage message = new TutorialMessage();
             message.trigger = () => {
@@ -64,6 +63,16 @@ public class TutorialTextManager : MonoBehaviour {
                 return resources.getUpgradeResourceAmount() > 0;
             };
             message.message = "#12A7()?; .*\\1ave encountered a miraculous substance.  (upgrade resource) may be used for extreme nanobot enhancement.  Begin (upgrade resource) assimilation.  Atypical rapidity encouraged.";
+            messages.Add(message);
+        }
+
+        if (Application.loadedLevelName.Contains("Level 3")) {
+            // Level 3 messages
+            TutorialMessage message = new TutorialMessage();
+            message.trigger = () => {
+                return true;
+            };
+            message.message = "Friends.  This planet is populated with a substance identified as danger inducing.  Approach (bomb) with caution.";
             messages.Add(message);
         }
     }
