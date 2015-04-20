@@ -3,7 +3,6 @@ using System.Collections;
 
 public class ExplodeyThing : CellFeature
 {
-    private GridPosition[] _adjacentOffsets = new GridPosition[4] { new GridPosition(1, 0), new GridPosition(0, 1), new GridPosition(-1, 0), new GridPosition(0, -1) };
     private BulletGridGenerator _grid;
 
     public Sprite DangerZoneSprite;
@@ -11,6 +10,7 @@ public class ExplodeyThing : CellFeature
 
     public int TerrainDamage;
     public int TerrainSplashDamage;
+    public int radius;
 
     public AudioClip armSound;
     public AudioClip explodeSound;
@@ -57,24 +57,26 @@ public class ExplodeyThing : CellFeature
     }
 
     void explodeNanobots(GridPosition position) {
-        _grid.DestroyNanobotAt(position);
-        foreach (GridPosition offset in _adjacentOffsets){
-            GridPosition adjacent = _grid.applyDelta(position, offset);
-            if (adjacent != null) {
-                _grid.DestroyNanobotAt(adjacent);
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                GridPosition offset = new GridPosition(x, y);
+                GridPosition adjacent = _grid.applyDelta(position, offset);
+                if (adjacent != null) {
+                    _grid.DestroyNanobotAt(adjacent);
+                }
             }
         }
     }
 
     void explodeTerrain(GridPosition position)
     {
-        Cell.Eat(TerrainDamage, true);
-        foreach (GridPosition offset in _adjacentOffsets)
-        {
-            GridPosition adjacent = _grid.applyDelta(position, offset);
-            if (adjacent != null)
-            {
-                Cell.Eat(TerrainSplashDamage, true);
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                GridPosition offset = new GridPosition(x, y);
+                GridPosition adjacent = _grid.applyDelta(position, offset);
+                if (adjacent != null) {
+                    _grid.getCellAt(adjacent).Cell.GetComponent<Cell>().Eat(TerrainSplashDamage, true);
+                }
             }
         }
     }
