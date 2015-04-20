@@ -9,6 +9,11 @@ public class PlacementMenuHandler : MonoBehaviour {
     private Nanobot nanobotPrefab = null;
 	
 	void Update () {
+        if (mouseFollowingSprite != null)
+        {
+            if (Input.GetMouseButtonDown(1)) stopDragging();
+        }
+
         if (mouseFollowingSprite != null) {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseFollowingSprite.transform.position = new Vector3(position.x, position.y, mouseFollowingSprite.transform.position.z);
