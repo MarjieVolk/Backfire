@@ -157,7 +157,7 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         // make the bot shrink to nothing all the time (if it's going to get destroyed) as a first approx
         if (destroyBot || bot == null) {
             if (SoundManager.instance != null) {
-                if (die)
+                if (!destroyBot)
                 {
                     SoundManager.instance.PlaySingle(GetComponent<AudioSource>(), crashSound);
                 }
