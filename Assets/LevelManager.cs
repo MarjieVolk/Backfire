@@ -5,6 +5,7 @@ public class LevelManager : MonoBehaviour {
 
     public string[] levels;
     public string menu;
+    public string winScreen;
 
     private int currentLevel = 0;
     private bool inMenu = true;
@@ -31,7 +32,12 @@ public class LevelManager : MonoBehaviour {
 
     public void loadCurrentLevel() {
         inMenu = false;
-        Application.LoadLevel(levels[currentLevel]);
+        if (currentLevel >= levels.Length) {
+            currentLevel = 0;
+            Application.LoadLevel(winScreen);
+        } else {
+            Application.LoadLevel(levels[currentLevel]);
+        }
     }
 
     public void exitGame() {
