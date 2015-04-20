@@ -42,19 +42,19 @@ public class PlaceabilityOutlineHandler : MonoBehaviour {
                     verticalEdges[x][y] = new GameObject();
                     verticalEdges[x][y].AddComponent<SpriteRenderer>();
                     verticalEdges[x][y].transform.position = placeVerticalEdge(x, y);
-                    verticalEdges[x][y].transform.localScale /= 2;
+                    verticalEdges[x][y].transform.localScale = (toAdd.transform.localScale / BulletGridGenerator.CELL_SCALE) / 2;
                     verticalEdges[x][y].GetComponent<SpriteRenderer>().sortingOrder = 2;
 
                     horizontalEdges[x][y] = new GameObject();
                     horizontalEdges[x][y].AddComponent<SpriteRenderer>();
                     horizontalEdges[x][y].transform.position = placeHorizontalEdge(x, y);
-                    horizontalEdges[x][y].transform.localScale /= 2;
+                    horizontalEdges[x][y].transform.localScale = (toAdd.transform.localScale / BulletGridGenerator.CELL_SCALE) / 2;
                     horizontalEdges[x][y].GetComponent<SpriteRenderer>().sortingOrder = 2;
 
                     corners[x][y] = new GameObject();
                     corners[x][y].AddComponent<SpriteRenderer>();
                     corners[x][y].transform.position = placeCorner(x, y);
-                    corners[x][y].transform.localScale = toAdd.transform.localScale / 2;
+                    corners[x][y].transform.localScale = (toAdd.transform.localScale / 0.9f) / 2;
                     corners[x][y].GetComponent<SpriteRenderer>().sortingOrder = 2;
                 }
             }

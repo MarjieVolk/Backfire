@@ -6,7 +6,7 @@ using System;
 public class WindAnimator : MonoBehaviour {
 
     public float chanceToGenerate;
-    public float maxSpeed = .1f;
+    public float speed = .1f;
     public Sprite[] sprites;
 
     private System.Random gen;
@@ -27,13 +27,12 @@ public class WindAnimator : MonoBehaviour {
 
             Wind wind = new Wind();
             wind.obj = obj;
-            wind.speed = (float) gen.NextDouble() * maxSpeed;
             winds.Add(wind);
         }
 
         List<Wind> toRemove = new List<Wind>();
         foreach (Wind wind in winds) {
-            float newX = wind.obj.transform.position.x + wind.speed;
+            float newX = wind.obj.transform.position.x + speed;
             if (newX > 20) {
                 toRemove.Add(wind);
             } else {
@@ -49,6 +48,5 @@ public class WindAnimator : MonoBehaviour {
 
     private class Wind {
         public GameObject obj;
-        public float speed;
     }
 }

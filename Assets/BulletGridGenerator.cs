@@ -5,6 +5,8 @@ using System;
 
 public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListener {
 
+    public const float CELL_SCALE = 0.9f;
+
     public GameObject NormalCell;
     public GameObject BombCell;
     public int startTileX, startTileY;
@@ -41,7 +43,7 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
                 //pick the cell type to place based on the color of the pixel at this location
                 GameObject cellPrefab = getPrefabForColor(levelDescriptor.GetPixel(x, y));
                 GameObject cell = (GameObject)Instantiate(cellPrefab, cellCenter, Quaternion.identity);
-                cell.transform.localScale = new Vector2(0.9f * cellWidth / cell.GetComponent<SpriteRenderer>().bounds.size.x, 0.9f * cellHeight / cell.GetComponent<SpriteRenderer>().bounds.size.y);
+                cell.transform.localScale = new Vector2(CELL_SCALE * cellWidth / cell.GetComponent<SpriteRenderer>().bounds.size.x, CELL_SCALE * cellHeight / cell.GetComponent<SpriteRenderer>().bounds.size.y);
                 cell.GetComponent<Cell>().GridPosition = new GridPosition(x, y);
                 GameGrid[x][y] = new GameCell();
                 GameGrid[x][y].Cell = cell;
