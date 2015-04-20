@@ -54,7 +54,7 @@ public class PlaceabilityOutlineHandler : MonoBehaviour {
                     corners[x][y] = new GameObject();
                     corners[x][y].AddComponent<SpriteRenderer>();
                     corners[x][y].transform.position = placeCorner(x, y);
-                    corners[x][y].transform.localScale = (toAdd.transform.localScale / 0.9f) / 2;
+                    corners[x][y].transform.localScale = (toAdd.transform.localScale / BulletGridGenerator.CELL_SCALE) / 2;
                     corners[x][y].GetComponent<SpriteRenderer>().sortingOrder = 2;
                 }
             }
