@@ -50,6 +50,12 @@ public class PlaceabilityOutlineHandler : MonoBehaviour {
                     horizontalEdges[x][y].transform.position = placeHorizontalEdge(x, y);
                     horizontalEdges[x][y].transform.localScale /= 2;
                     horizontalEdges[x][y].GetComponent<SpriteRenderer>().sortingOrder = 2;
+
+                    corners[x][y] = new GameObject();
+                    corners[x][y].AddComponent<SpriteRenderer>();
+                    corners[x][y].transform.position = placeCorner(x, y);
+                    corners[x][y].transform.localScale /= 2;
+                    corners[x][y].GetComponent<SpriteRenderer>().sortingOrder = 2;
                 }
             }
         }
@@ -65,6 +71,11 @@ public class PlaceabilityOutlineHandler : MonoBehaviour {
     private Vector2 placeHorizontalEdge(int x, int y)
     {
         return grid.gridPositionToWorldPosition(new GridPosition(x, y - 1)) - yOffset / 2.0f;
+    }
+
+    private Vector2 placeCorner(int x, int y)
+    {
+        return grid.gridPositionToWorldPosition(new GridPosition(x - 1, y - 1)) - xOffset / 2.0f - yOffset / 2.0f;
     }
 
     private void OnVisibilityChanged(BulletGridGenerator.GameCell cell, bool newVisibility)
@@ -87,26 +98,110 @@ public class PlaceabilityOutlineHandler : MonoBehaviour {
         updateVerticalEdgeSprite(x + 1, y);
     }
 
+    private bool getCellIsVisible(int x, int y)
+    {
+        if (x >= 0 && y >= 0 && x < grid.GameGrid.Length && y < grid.GameGrid[0].Length)
+        {
+            return grid.getCellAt(new GridPosition(x, y)).isExplored;
+        }
+
+        return false;
+    }
+
     private void updateCornerSprite(int x, int y)
     {
+        GameObject corner = corners[x][y];
 
+        bool botLeftVisible = getCellIsVisible(x - 1, y - 1);
+        bool topLeftVisible = getCellIsVisible(x - 1, y);
+        bool botRightVisible = getCellIsVisible(x, y - 1);
+        bool topRightVisible = getCellIsVisible(x, y);
+
+        int numVisible = 0;
+        if (botLeftVisible) numVisible++;
+        if (botRightVisible) numVisible++;
+        if (topLeftVisible) numVisible++;
+        if (topRightVisible) numVisible++;
+
+        if (numVisible == 0 || numVisible == 4)
+        {
+            corner.GetComponent<SpriteRenderer>().sprite = null;
+            return;
+        }
+
+        if (numVisible == 1)
+        {
+            corner.GetComponent<SpriteRenderer>().sprite = InnerCornerOverlay;
+            if (botRightVisible)
+            {
+                corner.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+            }
+            if (topRightVisible)
+            {
+                corner.transform.rotation = Quaternion.AngleAxis(90, Vector3.forward);
+            }
+            if (topLeftVisible)
+            {
+                corner.transform.rotation = Quaternion.AngleAxis(180, Vector3.forward);
+            }
+            if (botLeftVisible)
+            {
+                corner.transform.rotation = Quaternion.AngleAxis(270, Vector3.forward);
+            }
+        }
+
+        if (numVisible == 3)
+        {
+            corner.GetComponent<SpriteRenderer>().sprite = OuterCornerOverlay;
+            if (!botRightVisible)
+            {
+                corner.transform.rotation = Quaternion.AngleAxis(0, Vector3.forward);
+            }
+            if (!topRightVisible)
+            {
+                corner.transform.rotation = Quaternion.AngleAxis(90, Vector3.forward);
+            }
+            if (!topLeftVisible)
+            {
+                corner.transform.rotation = Quaternion.AngleAxis(180, Vector3.forward);
+            }
+            if (!botLeftVisible)
+            {
+                corner.transform.rotation = Quaternion.AngleAxis(270, Vector3.forward);
+            }
+        }
+
+        if (numVisible == 2)
+        {
+            if (botLeftVisible && botRightVisible)
+            {
+                corner.GetComponent<SpriteRenderer>().sprite = StraightEdgeOverlay;
+                corner.transform.localRotation = Quaternion.AngleAxis(270.0f, Vector3.forward);
+            }
+            if (topLeftVisible && topRightVisible)
+            {
+                corner.GetComponent<SpriteRenderer>().sprite = StraightEdgeOverlay;
+                corner.transform.localRotation = Quaternion.AngleAxis(90.0f, Vector3.forward);
+            }
+            if (botLeftVisible && topLeftVisible)
+            {
+                corner.GetComponent<SpriteRenderer>().sprite = StraightEdgeOverlay;
+                corner.transform.localRotation = Quaternion.AngleAxis(180.0f, Vector3.forward);
+            }
+            if (botRightVisible && topRightVisible)
+            {
+                corner.GetComponent<SpriteRenderer>().sprite = StraightEdgeOverlay;
+                corner.transform.localRotation = Quaternion.AngleAxis(0.0f, Vector3.forward);
+            }
+        }
     }
 
     private void updateVerticalEdgeSprite(int x, int y)
     {
         GameObject edge = verticalEdges[x][y];
 
-        bool leftVisible = false;
-        if (x != 0)
-        {
-            leftVisible = grid.getCellAt(new GridPosition(x - 1, y)).isExplored;
-        }
-
-        bool rightVisible = false;
-        if (x != grid.GameGrid.Length)
-        {
-            rightVisible = grid.getCellAt(new GridPosition(x, y)).isExplored;
-        }
+        bool leftVisible = getCellIsVisible(x - 1, y);
+        bool rightVisible = getCellIsVisible(x, y);
 
         if (leftVisible == rightVisible)
         {
@@ -130,17 +225,8 @@ public class PlaceabilityOutlineHandler : MonoBehaviour {
     {
         GameObject edge = horizontalEdges[x][y];
 
-        bool bottomVisible = false;
-        if (y != 0)
-        {
-            bottomVisible = grid.getCellAt(new GridPosition(x, y - 1)).isExplored;
-        }
-
-        bool topVisible = false;
-        if (y != grid.GameGrid[0].Length)
-        {
-            topVisible = grid.getCellAt(new GridPosition(x, y)).isExplored;
-        }
+        bool bottomVisible = getCellIsVisible(x, y - 1);
+        bool topVisible = getCellIsVisible(x, y);
 
         if (bottomVisible == topVisible)
         {
