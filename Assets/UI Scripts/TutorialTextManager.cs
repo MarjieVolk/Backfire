@@ -23,6 +23,7 @@ public class TutorialTextManager : MonoBehaviour {
 
         transform.GetChild(0).gameObject.SetActive(false);
         messages = new List<TutorialMessage>();
+        gameObject.AddComponent<AudioSource>();
 
         if (Application.loadedLevelName.Contains("OneBulletPrototype")) {
             // Level 1 messages
@@ -124,7 +125,7 @@ public class TutorialTextManager : MonoBehaviour {
         timePopupStarted = Time.time;
         timestepManager.setPaused(true);
         if (SoundManager.instance != null) {
-            SoundManager.instance.PlaySingle(gameObject.AddComponent<AudioSource>(), voiceSound);
+            SoundManager.instance.PlaySingle(gameObject.GetComponent<AudioSource>(), voiceSound);
         }
     }
 

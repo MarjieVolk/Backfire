@@ -10,7 +10,7 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
     public GameObject NormalCell;
     public GameObject BombCell;
     public int startTileX, startTileY;
-    public AudioClip fallSound;
+    public AudioClip fallSound, placeBotSound;
 
     public GameCell[][] GameGrid;
 
@@ -47,6 +47,7 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
                 GameObject cell = (GameObject)Instantiate(cellPrefab, cellCenter, Quaternion.identity);
                 cell.transform.localScale = new Vector2(CELL_SCALE * cellWidth / cell.GetComponent<SpriteRenderer>().bounds.size.x, CELL_SCALE * cellHeight / cell.GetComponent<SpriteRenderer>().bounds.size.y);
                 cell.GetComponent<Cell>().GridPosition = new GridPosition(x, y);
+                cell.GetComponent<Cell>().placeBotSound = placeBotSound;
                 GameGrid[x][y] = new GameCell();
                 GameGrid[x][y].Cell = cell;
                 GameGrid[x][y].Grid = this;

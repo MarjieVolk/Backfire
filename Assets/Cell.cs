@@ -9,6 +9,7 @@ public class Cell : MonoBehaviour {
     // those are part of the tile features
     public CellFeature[] CellFeatures;
     public GridPosition GridPosition;
+    public AudioClip placeBotSound;
 
     private BulletGridGenerator level;
 
@@ -22,6 +23,7 @@ public class Cell : MonoBehaviour {
             CellFeatures[i].transform.parent = transform;
         }
         FindObjectOfType<PlaceabilityOutlineHandler>().AddCell(this);
+        gameObject.AddComponent<AudioSource>();
 	}
 
     // Update is called once per frame
@@ -58,6 +60,10 @@ public class Cell : MonoBehaviour {
             gridPosition.position.X = this.GridPosition.X;
             gridPosition.position.Y = this.GridPosition.Y;
             placementHandler.stopDragging();
+
+            if (SoundManager.instance != null) {
+                SoundManager.instance.PlaySingle(GetComponent<AudioSource>(), placeBotSound);
+            }
         }
     }
 
