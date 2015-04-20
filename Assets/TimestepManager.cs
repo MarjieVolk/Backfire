@@ -20,6 +20,7 @@ public class TimestepManager : MonoBehaviour {
 
     void Start() {
         level = GameObject.FindObjectOfType<BulletGridGenerator>();
+        gameObject.AddComponent<AudioSource>();
     }
 
 	// Update is called once per frame
@@ -39,7 +40,7 @@ public class TimestepManager : MonoBehaviour {
             }
 
             if (SoundManager.instance != null && hasNanobot()) {
-                SoundManager.instance.RandomizeSfx(walkSound);
+                SoundManager.instance.RandomizeSfx(GetComponent<AudioSource>(), walkSound);
             }
         }
 	}

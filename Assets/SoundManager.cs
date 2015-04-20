@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SoundManager : MonoBehaviour {
 
-	public AudioSource efxSource;
+    public AudioClip guiHoverSound;
 	public AudioSource musicSource;
 	public static SoundManager instance = null;
 	
@@ -21,25 +21,25 @@ public class SoundManager : MonoBehaviour {
 		DontDestroyOnLoad (gameObject);
 	}
 	
-	public void PlaySingle(AudioClip clip)
+	public void PlaySingle(AudioSource source, AudioClip clip)
 	{
-		efxSource.clip = clip;
-		efxSource.Play ();
+		source.clip = clip;
+		source.Play ();
 	}
 
-    public void RandomizeSfx(AudioClip clip) {
+    public void RandomizeSfx(AudioSource source, AudioClip clip) {
         AudioClip[] clips = new AudioClip[] { clip };
-        RandomizeSfx(clips);
+        RandomizeSfx(source, clips);
     }
 
-	public void RandomizeSfx(AudioClip [] clips)
+	public void RandomizeSfx(AudioSource source, AudioClip [] clips)
 	{
 		int randomIndex = Random.Range(0, clips.Length);
 		float randomPitch = Random.Range (lowPitchRange, highPitchRange);
 		
-		efxSource.pitch = randomPitch;
-		efxSource.clip = clips[randomIndex];
-		efxSource.Play();
+		source.pitch = randomPitch;
+		source.clip = clips[randomIndex];
+		source.Play();
 	}
 	
 }
