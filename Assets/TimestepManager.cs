@@ -9,7 +9,6 @@ public class TimestepManager : MonoBehaviour {
 
     private float previousTimestepSeconds = 0;
     private bool paused = false;
-    private float previousTime = 0;
 
     private BulletGridGenerator level;
 

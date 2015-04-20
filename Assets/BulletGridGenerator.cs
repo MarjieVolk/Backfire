@@ -10,11 +10,13 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
     public GameObject NormalCell;
     public GameObject BombCell;
     public int startTileX, startTileY;
+    public AudioClip fallSound;
 
     public GameCell[][] GameGrid;
 
 	// Use this for initialization
 	void Start () {
+        gameObject.AddComponent<AudioSource>();
         GameObject.FindObjectOfType<TimestepManager>().addFinalizer(this);
         // Set up bullet grid based on levelDescriptor's size
         Texture2D levelDescriptor = GetComponent<SpriteRenderer>().sprite.texture;
@@ -142,6 +144,10 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         fakeBot.transform.position = finalPosition;
 
         // make the bot shrink to nothing all the time (if it's going to get destroyed) as a first approx
+        if (die && SoundManager.instance != null) {
+            SoundManager.instance.RandomizeSfx(GetComponent<AudioSource>(), fallSound);
+        }
+
         if (destroyBot || bot == null)
         {
             yield return null;

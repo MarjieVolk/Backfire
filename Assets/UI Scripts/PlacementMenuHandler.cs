@@ -7,15 +7,7 @@ public class PlacementMenuHandler : MonoBehaviour {
 
     private GameObject mouseFollowingSprite = null;
     private Nanobot nanobotPrefab = null;
-
-    private BotSlot[] botSlots;
-
-	// Use this for initialization
-	void Start () {
-        botSlots = GameObject.FindObjectsOfType<BotSlot>();
-	}
 	
-	// Update is called once per frame
 	void Update () {
         if (mouseFollowingSprite != null) {
             Vector3 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
