@@ -5,9 +5,15 @@ using System.Collections.Generic;
 
 public class PlacementMenuHandler : MonoBehaviour {
 
+    public AudioClip selectBotSound;
+
     private GameObject mouseFollowingSprite = null;
     private Nanobot nanobotPrefab = null;
-	
+
+    void Start() {
+        gameObject.AddComponent<AudioSource>();
+    }
+
 	void Update () {
         if (mouseFollowingSprite != null)
         {
@@ -21,6 +27,10 @@ public class PlacementMenuHandler : MonoBehaviour {
 	}
 
     public void clickNanobot(Nanobot nanobotPrefab) {
+        if (SoundManager.instance != null) {
+            SoundManager.instance.PlaySingle(GetComponent<AudioSource>(), selectBotSound);
+        }
+
         if (mouseFollowingSprite != null) {
             Destroy(mouseFollowingSprite);
         }
