@@ -45,16 +45,12 @@ public class ExplodeyThing : CellFeature
         explodeTerrain(cellPosition);
     }
 
-    void explodeNanobots(GridPosition position)
-    {
-        //TODO how do I kill the nanobots?
-        GameObject nanobotToKill = _grid.getCellAt(position).Nanobot;
+    void explodeNanobots(GridPosition position) {
+        _grid.DestroyNanobotAt(position);
         foreach (GridPosition offset in _adjacentOffsets){
             GridPosition adjacent = _grid.applyDelta(position, offset);
-            if (adjacent != null)
-            {
-                GameObject adjacentNanobotToKill = _grid.getCellAt(adjacent).Nanobot;
-                // TODO kill this guy too
+            if (adjacent != null) {
+                _grid.DestroyNanobotAt(adjacent);
             }
         }
     }
