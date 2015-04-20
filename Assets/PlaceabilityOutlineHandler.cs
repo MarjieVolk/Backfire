@@ -173,6 +173,7 @@ public class PlaceabilityOutlineHandler : MonoBehaviour {
 
         if (numVisible == 2)
         {
+            //straight edges
             if (botLeftVisible && botRightVisible)
             {
                 corner.GetComponent<SpriteRenderer>().sprite = StraightEdgeOverlay;
@@ -191,6 +192,18 @@ public class PlaceabilityOutlineHandler : MonoBehaviour {
             if (botRightVisible && topRightVisible)
             {
                 corner.GetComponent<SpriteRenderer>().sprite = StraightEdgeOverlay;
+                corner.transform.localRotation = Quaternion.AngleAxis(0.0f, Vector3.forward);
+            }
+
+            //kitty corners
+            if (botLeftVisible && topRightVisible)
+            {
+                corner.GetComponent<SpriteRenderer>().sprite = KittyCornerOverlay;
+                corner.transform.localRotation = Quaternion.AngleAxis(90.0f, Vector3.forward);
+            }
+            if (topLeftVisible && botRightVisible)
+            {
+                corner.GetComponent<SpriteRenderer>().sprite = KittyCornerOverlay;
                 corner.transform.localRotation = Quaternion.AngleAxis(0.0f, Vector3.forward);
             }
         }
