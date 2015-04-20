@@ -16,4 +16,12 @@ public class LevelLoader : MonoBehaviour {
     public void advanceLevel() {
         levelManager.advanceLevel();
     }
+
+    public void loadCurrentLevel() {
+        levelManager.loadCurrentLevel();
+    }
+
+    public void exitGame() {
+        levelManager.exitGame();
+    }
 }
