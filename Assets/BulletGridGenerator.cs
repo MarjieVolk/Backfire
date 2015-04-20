@@ -144,12 +144,11 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         fakeBot.transform.position = finalPosition;
 
         // make the bot shrink to nothing all the time (if it's going to get destroyed) as a first approx
-        if (die && SoundManager.instance != null) {
-            SoundManager.instance.RandomizeSfx(GetComponent<AudioSource>(), fallSound);
-        }
+        if (destroyBot || bot == null) {
+            if (SoundManager.instance != null) {
+                SoundManager.instance.RandomizeSfx(GetComponent<AudioSource>(), fallSound);
+            }
 
-        if (destroyBot || bot == null)
-        {
             yield return null;
             Vector3 initialScale = fakeBot.transform.localScale;
             for (int i = 0; i < durationInTicks * 2; i++)
