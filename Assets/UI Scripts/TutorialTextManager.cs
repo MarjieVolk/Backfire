@@ -131,6 +131,7 @@ public class TutorialTextManager : MonoBehaviour {
         if (SoundManager.instance != null) {
             SoundManager.instance.PlaySingle(gameObject.GetComponent<AudioSource>(), voiceSound);
         }
+        GameObject.FindObjectOfType<PlacementMenuHandler>().stopDragging();
     }
 
     public void onClick() {
