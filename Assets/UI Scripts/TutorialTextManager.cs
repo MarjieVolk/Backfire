@@ -5,20 +5,23 @@ using UnityEngine.UI;
 using System;
 
 public class TutorialTextManager : MonoBehaviour {
+    
+    public bool pitEncountered = false;
+    public bool bombExploded = false;
+    public float unclickableTimeSeconds = 1;
+    public AudioClip voiceSound;
 
     private List<TutorialMessage> messages;
+    private float timePopupStarted;
 
     private Resources resources;
     private TimestepManager timestepManager;
-
-    public bool pitEncountered = false;
-    public bool bombExploded = false;
 
     void Start() {
         resources = GameObject.FindObjectOfType<Resources>();
         timestepManager = GameObject.FindObjectOfType<TimestepManager>();
 
-        onClick(); // hide panel
+        transform.GetChild(0).gameObject.SetActive(false);
         messages = new List<TutorialMessage>();
 
         if (Application.loadedLevelName.Contains("OneBulletPrototype")) {
@@ -102,11 +105,14 @@ public class TutorialTextManager : MonoBehaviour {
     }
 
     void Update() {
-        foreach (TutorialMessage message in messages) {
-            if (message.trigger()) {
-                displayText(message.message);
-                messages.Remove(message);
-                break;
+        if (!transform.GetChild(0).gameObject.activeSelf) {
+            // Not active - check for more messages
+            foreach (TutorialMessage message in messages) {
+                if (message.trigger()) {
+                    displayText(message.message);
+                    messages.Remove(message);
+                    break;
+                }
             }
         }
     }
@@ -115,12 +121,18 @@ public class TutorialTextManager : MonoBehaviour {
         GameObject panel = transform.GetChild(0).gameObject;
         panel.SetActive(true);
         panel.GetComponentInChildren<Text>().text = text;
+        timePopupStarted = Time.time;
         timestepManager.setPaused(true);
+        if (SoundManager.instance != null) {
+            SoundManager.instance.PlaySingle(gameObject.AddComponent<AudioSource>(), voiceSound);
+        }
     }
 
     public void onClick() {
-        transform.GetChild(0).gameObject.SetActive(false);
-        timestepManager.setPaused(false);
+        if (Time.time - timePopupStarted > unclickableTimeSeconds) {
+            transform.GetChild(0).gameObject.SetActive(false);
+            timestepManager.setPaused(false);
+        }
     }
 
     private class TutorialMessage {
