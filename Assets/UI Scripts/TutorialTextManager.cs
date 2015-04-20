@@ -39,21 +39,21 @@ public class TutorialTextManager : MonoBehaviour {
             message.trigger = () => {
                 return resources.getJumpResourceAmount() > 0;
             };
-            message.message = "Friends.  We have encountered a foreign substance.  (Jump resource) may be useful for nanobot enhancement.  With enough (jump resource), the Nanocouncil may be capable of propulsion system fabrication.  Begin (jump resource) assimilation.";
+            message.message = "Friends. We have encountered a foreign substance. (Jump resource) may be useful for nanobot enhancement. With enough (jump resource), the Nanocouncil may be capable of propulsion system fabrication. Begin (jump resource) assimilation.";
             messages.Add(message);
 
             message = new TutorialMessage();
             message.trigger = () => {
                 return resources.getPlacementResourceAmount() >= 10;
             };
-            message.message = "Friends.  The Nanocouncil has calculated that this planet’s resources cannot sustain infinite expansion.  Favorably we have detected a nearby planet with more plentiful resources.  No methods of transit to alien planet known at this time.  Further exploration required.";
+            message.message = "Friends. The Nanocouncil has calculated that this planet’s resources cannot sustain infinite expansion. Favorably we have detected a nearby planet with more plentiful resources. No methods of transit to alien planet known at this time. Further exploration required.";
             messages.Add(message);
 
             message = new TutorialMessage();
             message.trigger = () => {
                 return pitEncountered;
             };
-            message.message = "Tragedy! We have lost a fellow nanobot to a void that appeared on the planetary surface.  Caution is advised to avoid repetition.";
+            message.message = "Unfavorable! We have lost a fellow friend to a hole on the planetary surface.  Planetary integrity decreasing.  Caution encouraged.";
             messages.Add(message);
         }
 
