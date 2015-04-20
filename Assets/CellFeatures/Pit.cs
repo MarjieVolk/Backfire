@@ -14,7 +14,9 @@ public class Pit : CellFeature {
 	}
 
     void ResourceConsumedHandler(int resourcesConsumed, bool exploded) {
-        text.pitEncountered = true;
+        if (text != null) {
+            text.pitEncountered = true;
+        }
         _grid.DestroyNanobotAt(Cell.GridPosition);
     }
 }
