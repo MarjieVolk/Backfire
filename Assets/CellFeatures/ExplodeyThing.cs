@@ -35,7 +35,6 @@ public class ExplodeyThing : CellFeature
     void ResourceConsumedHandler(int resourcesConsumed, bool exploded)
     {
         if (resourcesConsumed == 0) return;
-        Debug.Log(Amount);
         if (Amount == 0)
         {
             explode();

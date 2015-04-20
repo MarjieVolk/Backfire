@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 
 public class WindAnimator : MonoBehaviour {
 
@@ -9,20 +8,18 @@ public class WindAnimator : MonoBehaviour {
     public float speed = .1f;
     public Sprite[] sprites;
 
-    private System.Random gen;
     private List<Wind> winds;
 
     void Start() {
-        gen = new System.Random();
         winds = new List<Wind>();
     }
 
 	void Update () {
-	    if (gen.NextDouble() < chanceToGenerate) {
+	    if (Random.value < chanceToGenerate) {
             GameObject obj = new GameObject();
-            obj.AddComponent<SpriteRenderer>().sprite = sprites[gen.Next(sprites.Length)];
+            obj.AddComponent<SpriteRenderer>().sprite = sprites[Random.Range(0, sprites.Length)];
 
-            float y = (float) gen.NextDouble() * 10f - 5f;
+            float y = (float) Random.value * 10f - 5f;
             obj.transform.position = new Vector3(-20, y, 200);
 
             Wind wind = new Wind();

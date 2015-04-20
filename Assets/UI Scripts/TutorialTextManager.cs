@@ -6,10 +6,11 @@ using System;
 
 public class TutorialTextManager : MonoBehaviour {
     
-    public bool pitEncountered = false;
+    public float pitEncounteredTime = 0;
     public bool bombExploded = false;
     public float unclickableTimeSeconds = 1;
     public AudioClip voiceSound;
+    public Sprite jumpImage, collisionImage;
 
     private List<TutorialMessage> messages;
     private float timePopupStarted;
@@ -53,11 +54,12 @@ public class TutorialTextManager : MonoBehaviour {
                 return resources.getPlacementResourceAmount() >= 10;
             };
             message.message = "Friends. The Nanocouncil has calculated that this planet’s resources cannot sustain infinite expansion. Favorably we have detected a nearby planet with more plentiful resources. No methods of transit to alien planet known at this time. Further exploration required.";
+            message.image = jumpImage;
             messages.Add(message);
 
             message = new TutorialMessage();
             message.trigger = () => {
-                return pitEncountered;
+                return pitEncounteredTime > 0 && (Time.time - pitEncounteredTime > 2);
             };
             message.message = "Unfavorable! We have lost a fellow friend to a hole on the planetary surface.  Planetary integrity decreasing.  Caution encouraged.";
             messages.Add(message);
@@ -98,9 +100,10 @@ public class TutorialTextManager : MonoBehaviour {
 
             message = new TutorialMessage();
             message.trigger = () => {
-                return resources.getUpgradeResourceAmount() > 0;
+                return resources.getJumpResourceAmount() > 10;
             };
-            message.message = "Most unfavorable of verifications.  The Nanocouncil has calculated that our planet is on a collision course with an unknown body of unfathomable proportions.  Extrapolation of backwards trajectory is imperative.  Atypical rapidity advised.";
+            message.message = "Most unfavorable of verifications.  The Nanocouncil has calculated that our planet is on a collision course with an unknown body of unfathomable proportions.  Continuation of backwards trajectory is imperative.  Atypical rapidity advised.";
+            message.image = collisionImage;
             messages.Add(message);
         }
     }
@@ -110,7 +113,7 @@ public class TutorialTextManager : MonoBehaviour {
             // Not active - check for more messages
             foreach (TutorialMessage message in messages) {
                 if (message.trigger()) {
-                    displayText(message.message);
+                    displayMessage(message.message, message.image);
                     messages.Remove(message);
                     break;
                 }
@@ -118,10 +121,11 @@ public class TutorialTextManager : MonoBehaviour {
         }
     }
 
-    public void displayText(string text) {
+    public void displayMessage(string text, Sprite image) {
         GameObject panel = transform.GetChild(0).gameObject;
         panel.SetActive(true);
         panel.GetComponentInChildren<Text>().text = text;
+        panel.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Image>().sprite = image;
         timePopupStarted = Time.time;
         timestepManager.setPaused(true);
         if (SoundManager.instance != null) {
@@ -138,6 +142,7 @@ public class TutorialTextManager : MonoBehaviour {
 
     private class TutorialMessage {
         public string message;
+        public Sprite image = null;
         public Func<Boolean> trigger;
     }
 }
