@@ -10,7 +10,9 @@ public class TutorialTextManager : MonoBehaviour {
 
     private Resources resources;
     private TimestepManager timestepManager;
+
     public bool pitEncountered = false;
+    public bool bombExploded = false;
 
     void Start() {
         resources = GameObject.FindObjectOfType<Resources>();
@@ -81,6 +83,20 @@ public class TutorialTextManager : MonoBehaviour {
                 return true;
             };
             message.message = "Friends.  This planet is populated with a substance identified as danger inducing.  Approach (bomb) with caution.";
+            messages.Add(message);
+
+            message = new TutorialMessage();
+            message.trigger = () => {
+                return bombExploded;
+            };
+            message.message = "Let us take a microsecond to regret the untimely combustion of our fellow friends.";
+            messages.Add(message);
+
+            message = new TutorialMessage();
+            message.trigger = () => {
+                return resources.getUpgradeResourceAmount() > 0;
+            };
+            message.message = "Most unfavorable of verifications.  The Nanocouncil has calculated that our planet is on a collision course with an unknown body of unfathomable proportions.  Extrapolation of backwards trajectory is imperative.  Atypical rapidity advised.";
             messages.Add(message);
         }
     }
