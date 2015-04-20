@@ -21,13 +21,18 @@ public class SoundManager : MonoBehaviour {
 		DontDestroyOnLoad (gameObject);
 	}
 	
-	public void PlaySingle (AudioClip clip)
+	public void PlaySingle(AudioClip clip)
 	{
 		efxSource.clip = clip;
 		efxSource.Play ();
 	}
-	
-	public void RandomizeSfx (params AudioClip [] clips)
+
+    public void RandomizeSfx(AudioClip clip) {
+        AudioClip[] clips = new AudioClip[] { clip };
+        RandomizeSfx(clips);
+    }
+
+	public void RandomizeSfx(AudioClip [] clips)
 	{
 		int randomIndex = Random.Range(0, clips.Length);
 		float randomPitch = Random.Range (lowPitchRange, highPitchRange);
