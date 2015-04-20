@@ -9,6 +9,8 @@ public class BotSlot : MonoBehaviour {
     private PlacementMenuHandler handler;
     private Resources resources;
 
+    private string _id;
+
 	// Use this for initialization
 	void Start () {
         handler = GameObject.FindObjectOfType<PlacementMenuHandler>();
@@ -28,6 +30,7 @@ public class BotSlot : MonoBehaviour {
             foreach (Text text in transform.GetComponentsInChildren<Text>()) {
                 if (text.gameObject.name.Equals("ID")) {
                     text.text = nanobot.id;
+                    _id = nanobot.id;
                 } else if (text.gameObject.name.Equals("Price")) {
                     text.text = "" + nanobot.price;
                 }
@@ -64,6 +67,10 @@ public class BotSlot : MonoBehaviour {
 
         if (nanobot != null) {
             GetComponent<Button>().interactable = nanobot.price <= placementResource;
+            if (GetComponent<Button>().interactable && Input.GetKeyDown(_id.ToLower()))
+            {
+                handler.clickNanobot(nanobot);
+            }
         }
     }
 
