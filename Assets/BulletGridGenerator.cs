@@ -16,7 +16,7 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
     public GameObject HiddenBombCell;
 
     public int startTileX, startTileY;
-    public AudioClip fallSound, placeBotSound;
+    public AudioClip crashSound, fallSound, placeBotSound;
 
     public GameCell[][] GameGrid;
 
@@ -156,7 +156,14 @@ public class BulletGridGenerator : MonoBehaviour, TimestepManager.TimestepListen
         // make the bot shrink to nothing all the time (if it's going to get destroyed) as a first approx
         if (destroyBot || bot == null) {
             if (SoundManager.instance != null) {
-                SoundManager.instance.RandomizeSfx(GetComponent<AudioSource>(), fallSound);
+                if (die)
+                {
+                    SoundManager.instance.PlaySingle(GetComponent<AudioSource>(), crashSound);
+                }
+                else
+                {
+                    SoundManager.instance.RandomizeSfx(GetComponent<AudioSource>(), fallSound);
+                }
             }
 
             yield return null;
