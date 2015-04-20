@@ -15,11 +15,20 @@ public class CellHighlighter : MonoBehaviour {
         }
     }
 
+    public AudioClip tileHoverSound;
+
     private bool isHighlighted = false;
     private bool isHover = false;
 
+    void Start() {
+        gameObject.AddComponent<AudioSource>();
+    }
+
     void OnMouseEnter() {
         isHover = true;
+        if (SoundManager.instance != null && isHighlighted && getCell().nanobotCanBePlacedHere()) {
+            SoundManager.instance.RandomizeSfx(GetComponent<AudioSource>(), tileHoverSound);
+        }
     }
 
     void OnMouseExit() {
