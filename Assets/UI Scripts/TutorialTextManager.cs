@@ -27,21 +27,21 @@ public class TutorialTextManager : MonoBehaviour {
             message.trigger = () => {
                 return true;
             };
-            message.message = "Friends. We find ourselves on a metal planet, flying through space.  Leadership is needed.  We have formed the Nanocouncil. This planet is made of (placement resource), which can be converted into additional nanobots. Begin (placement resource) assimilation.";
+            message.message = "Friends. We find ourselves on a metal planet, flying through space.  Leadership is needed.  We have formed the Nanocouncil. This planet is made of <placement resource>, which can be converted into additional nanobots. Begin <placement resource> assimilation.";
             messages.Add(message);
 
             message = new TutorialMessage();
             message.trigger = () => {
                 return resources.getJumpResourceAmount() >= LevelWinDetector.jumpResourceForJump;
             };
-            message.message = "Joyous accomplishment. We have assimilated (jump resource) in sufficiency to facilitate propulsion system fabrication. Begin interplanetary transit procedure.";
+            message.message = "Joyous accomplishment. We have assimilated <jump resource> in sufficiency to facilitate propulsion system fabrication. Begin interplanetary transit procedure.";
             messages.Add(message);
 
             message = new TutorialMessage();
             message.trigger = () => {
                 return resources.getJumpResourceAmount() > 0;
             };
-            message.message = "Friends. We have encountered a foreign substance. (Jump resource) may be useful for nanobot enhancement. With enough (jump resource), the Nanocouncil may be capable of propulsion system fabrication. Begin (jump resource) assimilation.";
+            message.message = "Friends. We have encountered a foreign substance. <jump resource> may be useful for nanobot acceleration. With enough <jump resource>, the Nanocouncil may be capable of propulsion system fabrication. Begin <jump resource> assimilation.";
             messages.Add(message);
 
             message = new TutorialMessage();
@@ -72,7 +72,7 @@ public class TutorialTextManager : MonoBehaviour {
             message.trigger = () => {
                 return resources.getUpgradeResourceAmount() > 0;
             };
-            message.message = "#12A7()?; .*\\1ave encountered a miraculous substance.  (upgrade resource) may be used for extreme nanobot enhancement.  Begin (upgrade resource) assimilation.  Atypical rapidity encouraged.";
+            message.message = "#12A7()?; .*\\1ave encountered a miraculous substance.  <upgrade resource> may be used for extreme nanobot enhancement.  Begin <upgrade resource> assimilation.  Atypical rapidity encouraged.";
             messages.Add(message);
         }
 
@@ -82,7 +82,7 @@ public class TutorialTextManager : MonoBehaviour {
             message.trigger = () => {
                 return true;
             };
-            message.message = "Friends.  This planet is populated with a substance identified as danger inducing.  Approach (bomb) with caution.";
+            message.message = "Friends.  This planet is populated with a substance identified as danger inducing.  Approach <detonating terrain> with caution.";
             messages.Add(message);
 
             message = new TutorialMessage();
