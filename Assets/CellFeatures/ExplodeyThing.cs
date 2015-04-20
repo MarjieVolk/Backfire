@@ -12,15 +12,24 @@ public class ExplodeyThing : CellFeature
     public int TerrainDamage;
     public int TerrainSplashDamage;
 
+    public AudioClip armSound;
+    public AudioClip explodeSound;
+
+    private bool armSoundTriggered = false;
+
 	// Use this for initialization
 	void Start () {
         _grid = FindObjectOfType<BulletGridGenerator>();
         NotifyResourceConsumed += ResourceConsumedHandler;
+        gameObject.AddComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+        if (SoundManager.instance != null && _grid.GameGrid[Cell.GridPosition.X][Cell.GridPosition.Y].Nanobot != null && !armSoundTriggered) {
+            armSoundTriggered = true;
+            SoundManager.instance.PlaySingle(GetComponent<AudioSource>(), armSound);
+        }
 	}
 
     void ResourceConsumedHandler(int resourcesConsumed, bool exploded)
@@ -40,6 +49,9 @@ public class ExplodeyThing : CellFeature
 
     void explode()
     {
+        if (SoundManager.instance != null) {
+            SoundManager.instance.PlaySingle(GetComponent<AudioSource>(), explodeSound);
+        }
         GridPosition cellPosition = Cell.GridPosition;
         explodeNanobots(cellPosition);
         explodeTerrain(cellPosition);
@@ -57,13 +69,13 @@ public class ExplodeyThing : CellFeature
 
     void explodeTerrain(GridPosition position)
     {
-        _grid.getCellAt(position).Cell.GetComponent<Cell>().Eat(TerrainDamage, true);
+        Cell.Eat(TerrainDamage, true);
         foreach (GridPosition offset in _adjacentOffsets)
         {
             GridPosition adjacent = _grid.applyDelta(position, offset);
             if (adjacent != null)
             {
-                _grid.getCellAt(adjacent).Cell.GetComponent<Cell>().Eat(TerrainSplashDamage, true);
+                Cell.Eat(TerrainSplashDamage, true);
             }
         }
     }
