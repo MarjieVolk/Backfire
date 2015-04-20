@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: b188494dcdd25ee48b87522dc1da0ed9
 timeCreated: 1429488721
+=======
+guid: 89ada3794cfb0ec4aa675c3472ad1e47
+timeCreated: 1429488571
+>>>>>>> Add a next level button.
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
